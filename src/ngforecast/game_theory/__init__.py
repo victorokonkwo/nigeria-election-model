@@ -1,0 +1,1 @@
+"""Game-theoretic scenario modelling."""
