@@ -1,0 +1,56 @@
+stages:
+  - pull_data:
+      cmd: python scripts/pull_data.py
+      deps:
+        - scripts/pull_data.py
+        - config/data_sources.yaml
+      outs:
+        - data/raw/inec
+        - data/raw/nbs
+        - data/raw/cbn
+        - data/raw/oil
+        - data/raw/acled
+        - data/raw/polls
+
+  - build_panel:
+      cmd: python scripts/build_panel.py
+      deps:
+        - scripts/build_panel.py
+        - data/raw
+        - data/external
+        - config/config.yaml
+        - config/constitution.yaml
+      outs:
+        - data/processed/panel.parquet
+        - data/processed/W.npz
+        - data/processed/strata.parquet
+
+  - fit_models:
+      cmd: python scripts/fit_models.py
+      deps:
+        - scripts/fit_models.py
+        - data/processed/panel.parquet
+        - data/processed/W.npz
+        - data/processed/strata.parquet
+        - config/model.yaml
+      outs:
+        - outputs/models
+
+  - run_forecast:
+      cmd: python scripts/run_forecast.py
+      deps:
+        - scripts/run_forecast.py
+        - outputs/models
+        - data/processed/panel.parquet
+        - data/processed/W.npz
+        - config/scenarios.yaml
+        - config/config.yaml
+      outs:
+        - outputs/forecasts/latest.json
+
+  - report:
+      cmd: python -m ngforecast.reporting.figures
+      deps:
+        - outputs/forecasts/latest.json
+      outs:
+        - outputs/figures/calibration.png

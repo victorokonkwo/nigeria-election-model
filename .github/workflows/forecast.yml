@@ -1,0 +1,61 @@
+name: Weekly Forecast
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"  # Every Monday at 06:00 UTC
+  workflow_dispatch:       # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  forecast:
+    runs-on: ubuntu-latest
+    env:
+      INEC_API_KEY: ${{ secrets.INEC_API_KEY }}
+      NBS_API_KEY: ${{ secrets.NBS_API_KEY }}
+      CBN_API_KEY: ${{ secrets.CBN_API_KEY }}
+      ACLED_ACCESS_KEY: ${{ secrets.ACLED_ACCESS_KEY }}
+      ACLED_EMAIL: ${{ secrets.ACLED_EMAIL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.3"
+
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages(c("splm", "spdep", "plm", "Matrix"), repos="https://cloud.r-project.org")'
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Pull latest data
+        run: uv run python scripts/pull_data.py
+
+      - name: Build panel
+        run: uv run python scripts/build_panel.py
+
+      - name: Fit models
+        run: uv run python scripts/fit_models.py
+
+      - name: Run forecast
+        run: uv run python scripts/run_forecast.py
+
+      - name: Commit forecast log
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add outputs/forecasts/
+          git diff --cached --quiet || git commit -m "forecast: $(date -u +%Y-%m-%d)"
+          git push

@@ -1,0 +1,62 @@
+# ── Data Sources & Endpoints ─────────────────
+# Each source specifies API details, expected schema, and vintage tracking.
+
+inec:
+  description: "INEC historical presidential results by state/LGA + voter register"
+  base_url: "https://api.inecnigeria.org/v1"
+  endpoints:
+    results: /elections/presidential/results
+    register: /elections/voter-register
+  vintage: "2024-Q4"
+  format: csv
+  auth: api_key  # from .env → INEC_API_KEY
+
+nbs:
+  description: "National Bureau of Statistics — poverty, unemployment, CPI by state"
+  base_url: "https://nigerianstat.gov.ng/api"
+  endpoints:
+    poverty: /data/poverty
+    unemployment: /data/unemployment
+    cpi: /data/cpi
+  vintage: "2024-Q3"
+  format: csv
+
+cbn:
+  description: "Central Bank of Nigeria — inflation, exchange rate, money supply"
+  base_url: "https://www.cbn.gov.ng/api/v2"
+  endpoints:
+    inflation: /statistics/inflation
+    exchange_rate: /statistics/exchange-rate
+  vintage: "2024-Q4"
+  format: json
+
+oil:
+  description: "Oil price & production (Brent, OPEC reference basket)"
+  sources:
+    - name: eia
+      url: "https://api.eia.gov/v2/petroleum/pri/spt/data/"
+    - name: opec
+      url: "https://data.opec.org/api"
+  vintage: "2025-Q2"
+  format: json
+
+polls:
+  description: "Pre-election polls (NOI Polls, Afrobarometer, ad hoc)"
+  sources:
+    - name: noi_polls
+      format: csv
+      path: data/raw/polls/noi/
+    - name: afrobarometer
+      format: csv
+      path: data/raw/polls/afrobarometer/
+  vintage: rolling
+
+acled:
+  description: "Armed Conflict Location & Event Data — political violence index"
+  base_url: "https://api.acleddata.com/acled/read"
+  params:
+    iso: 566  # Nigeria
+    event_type: "Political violence"
+  auth: acled_key  # ACLED_ACCESS_KEY + ACLED_EMAIL from .env
+  vintage: rolling
+  format: json

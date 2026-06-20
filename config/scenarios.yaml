@@ -1,0 +1,106 @@
+# ── Scenario Configuration ───────────────────
+# Each scenario defines a game-theoretic state of the race.
+# The Monte Carlo engine samples scenarios with probability πⱼ.
+
+baseline:
+  label: "Status quo — all major candidates run"
+  description: >
+    All declared candidates remain in the race. No coalition deals.
+    Voter preferences follow structural fundamentals.
+  prior_probability: 0.45
+  candidates:
+    - {id: APC, name: "APC Candidate", status: running}
+    - {id: PDP, name: "PDP Candidate", status: running}
+    - {id: LP, name: "LP Candidate", status: running}
+    - {id: NNPP, name: "NNPP Candidate", status: running}
+  coalition: null
+  turnout_modifier: 1.0
+
+opposition_coalition:
+  label: "PDP–LP merger"
+  description: >
+    PDP and LP form electoral alliance. LP voters migrate to PDP
+    with QRE friction λ. Minor turnout boost from mobilization.
+  prior_probability: 0.15
+  candidates:
+    - {id: APC, name: "APC Candidate", status: running}
+    - {id: PDP_LP, name: "PDP-LP Coalition", status: running}
+    - {id: NNPP, name: "NNPP Candidate", status: running}
+  coalition:
+    members: [PDP, LP]
+    primary: PDP
+    migration_lambda: 2.5       # QRE rationality → higher = more strategic migration
+  turnout_modifier: 1.05
+
+lp_withdrawal:
+  label: "LP candidate withdraws (no formal coalition)"
+  description: >
+    LP candidate drops out. Voters split across remaining parties
+    based on second-preference estimates and state-level QRE.
+  prior_probability: 0.10
+  candidates:
+    - {id: APC, name: "APC Candidate", status: running}
+    - {id: PDP, name: "PDP Candidate", status: running}
+    - {id: NNPP, name: "NNPP Candidate", status: running}
+  coalition: null
+  withdrawal:
+    party: LP
+    reallocation:               # estimated second-preference shares
+      PDP: 0.55
+      APC: 0.20
+      NNPP: 0.15
+      abstain: 0.10
+  turnout_modifier: 0.97
+
+northern_consolidation:
+  label: "APC–NNPP northern pact"
+  description: >
+    APC and NNPP consolidate the northern vote via VP deal.
+    Strong Tullock contest mobilization in NW/NE zones.
+  prior_probability: 0.10
+  candidates:
+    - {id: APC_NNPP, name: "APC-NNPP Pact", status: running}
+    - {id: PDP, name: "PDP Candidate", status: running}
+    - {id: LP, name: "LP Candidate", status: running}
+  coalition:
+    members: [APC, NNPP]
+    primary: APC
+    migration_lambda: 3.0
+  turnout_modifier: 1.08
+  zone_turnout_boost:
+    North-West: 1.12
+    North-East: 1.10
+
+fragmented:
+  label: "Highly fragmented field — 5+ viable candidates"
+  description: >
+    Additional splinter candidates enter, diluting major-party
+    shares. Raises probability of runoff under §134.
+  prior_probability: 0.10
+  candidates:
+    - {id: APC, name: "APC Candidate", status: running}
+    - {id: PDP, name: "PDP Candidate", status: running}
+    - {id: LP, name: "LP Candidate", status: running}
+    - {id: NNPP, name: "NNPP Candidate", status: running}
+    - {id: SDP, name: "SDP Candidate", status: running}
+    - {id: ADC, name: "ADC Candidate", status: running}
+  coalition: null
+  turnout_modifier: 0.95
+
+high_violence:
+  label: "Pre-election political violence surge"
+  description: >
+    ACLED violence index spikes 2σ above historical mean.
+    Suppresses turnout in affected zones (NE, NC), shifts
+    relative state-level shares.
+  prior_probability: 0.10
+  candidates:
+    - {id: APC, name: "APC Candidate", status: running}
+    - {id: PDP, name: "PDP Candidate", status: running}
+    - {id: LP, name: "LP Candidate", status: running}
+    - {id: NNPP, name: "NNPP Candidate", status: running}
+  coalition: null
+  turnout_modifier: 0.88
+  zone_turnout_suppression:
+    North-East: 0.75
+    North-Central: 0.85

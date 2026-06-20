@@ -1,0 +1,72 @@
+# ── Model Configuration ──────────────────────
+
+# ── Spatial weight matrix W ──────────────────
+spatial:
+  W_type: zone_block           # "contiguity" | "zone_block" | "hybrid"
+  row_standardize: true
+  zones:
+    - North-Central
+    - North-East
+    - North-West
+    - South-East
+    - South-South
+    - South-West
+
+# ── Spatial panel model (R: splm) ────────────
+fundamentals:
+  model: SAR                   # SAR | SEM | SAC | SDM
+  estimator: ML                # ML | GM (Kapoor et al.)
+  effects: twoways             # individual | time | twoways
+  covariates:
+    - incumbent_party
+    - vote_share_lag1
+    - poverty_rate
+    - unemployment_rate
+    - cpi_change
+    - oil_price_change
+    - violence_index
+    - voter_turnout_lag1
+    - ethnic_frac
+    - urbanization
+  priors:
+    rho:                       # spatial autoregressive parameter
+      distribution: uniform
+      bounds: [-1, 1]
+
+# ── GMM cross-check (R: plm/pdynmc) ─────────
+gmm:
+  model: system_gmm            # diff_gmm | system_gmm
+  lags: 2
+  instruments: [vote_share_lag2, poverty_rate_lag1]
+
+# ── Turnout model (SUR) ─────────────────────
+turnout:
+  joint_with: vote_share       # estimate jointly via SUR
+  covariates:
+    - registered_voters_change
+    - violence_index
+    - urbanization
+    - rain_dummy
+    - incumbent_running
+
+# ── MRP (multilevel + poststratification) ────
+mrp:
+  group_effects:
+    - state
+    - zone
+    - age_group
+    - gender
+    - urban_rural
+  population_source: data/external/census_marginals.csv
+  min_polls_to_activate: 3     # require at least 3 polls before MRP enters ensemble
+
+# ── Ensemble ─────────────────────────────────
+ensemble:
+  method: bayesian_stacking     # bayesian_stacking | simple_average | bma
+  components:
+    - fundamentals
+    - gmm
+    - turnout
+    - mrp
+  weights_prior: dirichlet      # equal Dirichlet → data-driven
+  backtest_elections: [2015, 2019, 2023]

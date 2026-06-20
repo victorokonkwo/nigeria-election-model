@@ -1,0 +1,38 @@
+# ── Global Configuration ─────────────────────
+# All paths are relative to the project root.
+
+project_name: ngforecast
+version: "0.1.0"
+
+# ── Election target ──────────────────────────
+election_date: "2027-02-27"
+election_type: presidential
+
+# ── Paths ────────────────────────────────────
+paths:
+  data_raw: data/raw
+  data_interim: data/interim
+  data_processed: data/processed
+  data_external: data/external
+  outputs: outputs
+  models: outputs/models
+  forecasts: outputs/forecasts
+  figures: outputs/figures
+
+# ── Simulation ───────────────────────────────
+n_sims: 20000
+seed: 2027
+
+# ── Historical elections used for training ───
+training_elections:
+  - 1999
+  - 2003
+  - 2007
+  - 2011
+  - 2015
+  - 2019
+  - 2023
+
+# ── Logging ──────────────────────────────────
+log_level: INFO
+log_file: logs/ngforecast.log

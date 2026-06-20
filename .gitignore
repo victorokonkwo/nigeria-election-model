@@ -1,0 +1,57 @@
+# ── Byte-compiled / optimized / DLL files ─────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ── Distribution / packaging ─────────────────
+dist/
+build/
+*.egg-info/
+*.egg
+
+# ── Virtual environments ─────────────────────
+.venv/
+venv/
+env/
+
+# ── Data (DVC-tracked) ──────────────────────
+data/raw/
+data/interim/
+data/processed/
+# Keep external (small reference files checked in or gitkeep'd)
+
+# ── Outputs (DVC-tracked) ───────────────────
+outputs/models/
+outputs/forecasts/
+outputs/figures/
+
+# ── Environment / secrets ────────────────────
+.env
+.secrets.baseline
+
+# ── IDE ──────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ───────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Jupyter ──────────────────────────────────
+.ipynb_checkpoints/
+
+# ── Logs ─────────────────────────────────────
+logs/
+
+# ── R ────────────────────────────────────────
+.Rhistory
+.RData
+.Rproj.user/
+
+# ── DVC ──────────────────────────────────────
+/data/raw.dvc
+/data/processed.dvc

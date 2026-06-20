@@ -1,0 +1,101 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ngforecast"
+version = "0.1.0"
+description = "Nigeria presidential election forecasting model"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+authors = [{ name = "ngforecast contributors" }]
+keywords = ["election", "forecast", "nigeria", "spatial-panel", "monte-carlo"]
+
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "polars>=1.0",
+    "scipy>=1.13",
+    "scikit-learn>=1.5",
+    "pymc>=5.15",
+    "arviz>=0.18",
+    "bambi>=0.14",
+    "pydantic>=2.7",
+    "pandera>=0.20",
+    "networkx>=3.3",
+    "geopandas>=1.0",
+    "libpysal>=4.10",
+    "matplotlib>=3.9",
+    "seaborn>=0.13",
+    "plotly>=5.22",
+    "httpx>=0.27",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "typer>=0.12",
+    "loguru>=0.7",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2",
+    "pytest-cov>=5.0",
+    "pytest-xdist>=3.5",
+    "hypothesis>=6.100",
+    "ruff>=0.5",
+    "black>=24.4",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+    "nbstripout>=0.7",
+    "ipykernel>=6.29",
+    "jupyterlab>=4.2",
+]
+r-bridge = [
+    "rpy2>=3.5",
+]
+
+[project.scripts]
+ngforecast = "ngforecast.forecast.run:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ngforecast"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "S", "B", "A", "C4", "SIM", "TCH"]
+ignore = ["S101"]  # allow assert in tests
+
+[tool.ruff.lint.isort]
+known-first-party = ["ngforecast"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: integration tests requiring full pipeline",
+]
+
+[tool.coverage.run]
+source = ["src/ngforecast"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

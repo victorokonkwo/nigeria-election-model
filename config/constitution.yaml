@@ -1,0 +1,77 @@
+# ── Constitutional Rules for Presidential Election ───
+# Source: 1999 Constitution of the Federal Republic of Nigeria (as amended)
+# Section 134 — Election of President
+
+# ── Geographic units ─────────────────────────
+n_states: 36
+fct: true                       # FCT Abuja counts as a unit
+total_units: 37                  # 36 states + FCT
+units:
+  - {code: AB, name: Abia, zone: South-East}
+  - {code: AD, name: Adamawa, zone: North-East}
+  - {code: AK, name: Akwa Ibom, zone: South-South}
+  - {code: AN, name: Anambra, zone: South-East}
+  - {code: BA, name: Bauchi, zone: North-East}
+  - {code: BY, name: Bayelsa, zone: South-South}
+  - {code: BE, name: Benue, zone: North-Central}
+  - {code: BO, name: Borno, zone: North-East}
+  - {code: CR, name: Cross River, zone: South-South}
+  - {code: DE, name: Delta, zone: South-South}
+  - {code: EB, name: Ebonyi, zone: South-East}
+  - {code: ED, name: Edo, zone: South-South}
+  - {code: EK, name: Ekiti, zone: South-West}
+  - {code: EN, name: Enugu, zone: South-East}
+  - {code: GO, name: Gombe, zone: North-East}
+  - {code: IM, name: Imo, zone: South-East}
+  - {code: JI, name: Jigawa, zone: North-West}
+  - {code: KD, name: Kaduna, zone: North-West}
+  - {code: KN, name: Kano, zone: North-West}
+  - {code: KT, name: Katsina, zone: North-West}
+  - {code: KE, name: Kebbi, zone: North-West}
+  - {code: KO, name: Kogi, zone: North-Central}
+  - {code: KW, name: Kwara, zone: North-Central}
+  - {code: LA, name: Lagos, zone: South-West}
+  - {code: NA, name: Nasarawa, zone: North-Central}
+  - {code: NI, name: Niger, zone: North-Central}
+  - {code: OG, name: Ogun, zone: South-West}
+  - {code: ON, name: Ondo, zone: South-West}
+  - {code: OS, name: Osun, zone: South-West}
+  - {code: OY, name: Oyo, zone: South-West}
+  - {code: PL, name: Plateau, zone: North-Central}
+  - {code: RI, name: Rivers, zone: South-South}
+  - {code: SO, name: Sokoto, zone: North-West}
+  - {code: TA, name: Taraba, zone: North-East}
+  - {code: YO, name: Yobe, zone: North-East}
+  - {code: ZA, name: Zamfara, zone: North-West}
+  - {code: FC, name: FCT Abuja, zone: North-Central}
+
+zones:
+  - North-Central
+  - North-East
+  - North-West
+  - South-East
+  - South-South
+  - South-West
+
+# ── Win condition: §134(2) ───────────────────
+# A candidate wins outright if:
+#   (a) they have the highest number of votes nationally, AND
+#   (b) they secure ≥ 25% of the votes cast in at least 2/3 of
+#       all states + FCT  →  ⌈37 × 2/3⌉ = 25 units
+win_rule:
+  majority: plurality           # highest vote count (not necessarily >50%)
+  spread_threshold: 0.25        # 25% of votes cast in each qualifying state
+  spread_minimum_units: 25      # must meet threshold in ≥ 25 of 37 units
+  formula: "ceil(total_units * 2 / 3)"
+
+# ── Runoff: §134(4) ─────────────────────────
+# If no candidate satisfies the win rule, a runoff is held between
+# the top-two candidates within 21 days.
+runoff:
+  triggered_when: "no candidate meets win_rule"
+  candidates: 2                  # top two by national vote
+  days_after: 21
+  win_rule:
+    majority: simple_majority    # >50% of valid votes in round 2
+    spread_threshold: 0.25
+    spread_minimum_units: 25
