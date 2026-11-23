@@ -1,0 +1,18 @@
+[
+  {
+    "name": "fig1_backtest_crps.png",
+    "caption": "Leave-future-out backtests: mean state-level CRPS (percentage points, lower is better) of the incumbent-party vote share for 2015, 2019 and 2023, for the prequential stack, deterministic uniform swing and probabilistic uniform swing. Left: each model uses its own national forecast. Right: the true national share is supplied (oracle), isolating state-level skill."
+  },
+  {
+    "name": "fig2_backtest_intervals.png",
+    "caption": "Prequential stack, oracle mode: posterior median and 90% interval of the incumbent-party share in each of the 37 units against the outcome, for 2015, 2019 and 2023 (coverage 100%, 100%, 86%). Hollow orange markers are outcomes outside the interval. Dashed line: the 25% \u00a7134 threshold."
+  },
+  {
+    "name": "fig3_2027_spread_conditional.png",
+    "caption": "2027 pre-registered forecast: probability that APC obtains at least 25% of the vote in 24 2/3 of the 37 units (\u00a7134, default legal reading) as a function of APC's national vote share. Line: mean over the six main-challenger home-zone scenarios; band: range across scenarios. Dashed line: APC's 2023 national share (36.6%)."
+  },
+  {
+    "name": "fig4_2027_states.png",
+    "caption": "2027 pre-registered forecast of APC's share of valid votes by state (posterior median and 90% interval), scenario with the main challenger from the North-East. Dashed line: 25% threshold."
+  }
+]
