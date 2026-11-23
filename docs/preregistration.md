@@ -24,6 +24,9 @@ As documented in `docs/methodology.md`. The model will not be modified after thi
 - Monte Carlo simulations: 20,000
 - Error structure: 3-level (national + zonal + state)
 - Constitutional rule: §134 as implemented in `src/ngforecast/simulation/constitution.py`
+  - Default reading: FCT as 37th unit (*Obi v INEC*, 2023); 24⅔ units met per *Awolowo v Shagari* (1979)
+  - Sensitivity variants reported alongside: `states_only`, `states_plus_fct`, `ceil`, `floor` (ADR-003)
+  - Second/third elections per §134(3)–(5): leader vs. most-units candidate; majority + spread, then simple majority
 
 ### Evaluation Criteria
 The model will be evaluated against the actual 2027 result on:

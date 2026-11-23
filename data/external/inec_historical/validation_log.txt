@@ -1,0 +1,47 @@
+== 1999 (IFES/AAEA report p.76, INEC votes-cast data, OCR)
+  OCR fix Abia pdp: 380823 -> 360823 (share 67.33% matches printed column)
+  OCR fix Cross River app: 283488 -> 283468 (share 32.35% matches printed column)
+  OCR fix Ekiti pdp: 191518 -> 191618 (share 26.85% matches printed column)
+  OCR fix Niger app: 140485 -> 140465 (share 16.12% matches printed column)
+  col reg: sum states 57,938,945 vs printed total 57,938,945 OK
+  col valid: sum states 29,848,441 vs printed total 29,848,441 OK
+  col pdp: sum states 18,738,154 vs printed total 18,738,154 OK
+  col app: sum states 11,110,287 vs printed total 11,110,287 OK
+  row checks failed: 0
+== 2003 (INEC website 2003elections/results/presidential, archived 29 Apr 2003)
+  WARNING Imo: only 26 of 27 LGAs received
+== 2011 (INEC results dashboard CSV inec_presidential_results_37_states.csv)
+  note: valid votes for 2011 = sum of all 20 party rows in the INEC CSV (CSV has no valid/rejected/registered fields)
+== 2015 (INEC 'Summary of Results' sheet, scanned PDF, OCR + arithmetic validation)
+  Gombe: OCR valid 4605 replaced by party sum 460599 (party sum + rejected == total cast 473444)
+  col ADC: sum states 29,666 vs printed total 29,665 DIFF 1
+  all other columns: sum of states == printed national total
+  INEC 2023 report Table 8.8 registered voters: 2019 sum 84,004,084, 2023 sum 93,469,008
+== 2019 (Stears Elections __NEXT_DATA__ partyDominanceData)
+  'Others' derived as valid minus named parties; differs from Stears' own Others figure in 37 states (Stears Others national sum 856,641 vs derived 869,758)
+== 2023 (Stears Elections __NEXT_DATA__ partyDominanceData)
+  'Others' derived as valid minus named parties; differs from Stears' own Others figure in 0 states (Stears Others national sum 648,474 vs derived 648,474)
+== national validation (sum of states vs official)
+  1999 PDP             computed   18,738,154  official   18,738,154  MATCH
+  1999 APP/AD (Falae)  computed   11,110,287  official   11,110,287  MATCH
+  1999 valid           computed   29,848,441  official   29,848,441  MATCH
+  2003 PDP             computed   24,456,140  official   24,456,140  MATCH
+  2003 ANPP            computed   12,710,022  official   12,710,022  MATCH
+  2003 APGA            computed    1,297,445  official    1,297,445  MATCH
+  2003 valid           computed   39,480,489  official   39,480,489  MATCH
+  2011 PDP             computed   22,495,187  official   22,495,187  MATCH
+  2011 CPC             computed   12,214,853  official   12,214,853  MATCH
+  2011 ACN             computed    2,067,301  official    2,079,151  DIFF -11,850
+  2011 ANPP            computed      917,012  official      917,012  MATCH
+  2011 valid           computed   38,199,219
+  2015 APC             computed   15,424,921  official   15,424,921  MATCH
+  2015 PDP             computed   12,853,162  official   12,853,162  MATCH
+  2015 valid           computed   28,587,564  official   28,587,564  MATCH
+  2019 APC             computed   15,191,847  official   15,191,847  MATCH
+  2019 PDP             computed   11,262,978  official   11,262,978  MATCH
+  2019 valid           computed   27,324,583  official   27,324,583  MATCH
+  2023 APC             computed    8,794,726  official    8,794,726  MATCH
+  2023 PDP             computed    6,984,520  official    6,984,520  MATCH
+  2023 LP              computed    6,101,533  official    6,101,533  MATCH
+  2023 NNPP            computed    1,496,687  official    1,496,687  MATCH
+  2023 valid           computed   24,025,940  official   24,025,940  MATCH

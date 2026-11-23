@@ -64,3 +64,63 @@ def ensemble_predict(
     for name, pred in component_predictions.items():
         result += weights.get(name, 0.0) * pred
     return result
+
+
+# ── Stacking of predictive distributions (Yao, Vehtari, Simpson & Gelman 2018) ──
+
+
+def gaussian_logit_logdens(draws: np.ndarray, actual: np.ndarray, eps: float = 1e-3) -> np.ndarray:
+    """Log predictive density of `actual` shares under each state's draws.
+
+    Each state's predictive distribution is approximated by a Gaussian on the
+    logit scale (shares are clipped to [eps, 1 - eps]). The Jacobian of the
+    logit transform is common to all models, so it is omitted: it does not
+    affect stacking weights.
+
+    draws : (S, n) predictive draws of shares; actual : (n,) -> (n,) log densities
+    """
+    clip = lambda p: np.clip(p, eps, 1 - eps)  # noqa: E731
+    z = np.log(clip(draws) / (1 - clip(draws)))
+    y = np.log(clip(actual) / (1 - clip(actual)))
+    mu, sd = z.mean(axis=0), np.maximum(z.std(axis=0), 1e-3)
+    return -0.5 * np.log(2 * np.pi * sd**2) - 0.5 * ((y - mu) / sd) ** 2
+
+
+def stack_densities(log_dens: np.ndarray, names: list[str]) -> dict[str, float]:
+    """Stacking weights maximising sum_i log sum_k w_k p_k(y_i).
+
+    log_dens : (n_obs, K) log predictive densities of held-out outcomes.
+    """
+    from scipy.optimize import minimize
+    from scipy.special import logsumexp, softmax
+
+    k = log_dens.shape[1]
+    if k == 1:
+        return {names[0]: 1.0}
+
+    def neg(theta):
+        logw = np.log(softmax(np.append(theta, 0.0)) + 1e-300)
+        return -np.sum(logsumexp(log_dens + logw[None, :], axis=1))
+
+    res = minimize(neg, np.zeros(k - 1), method="L-BFGS-B")
+    w = softmax(np.append(res.x, 0.0))
+    weights = dict(zip(names, w.tolist(), strict=True))
+    logger.info("Stacking weights: {}", {n: round(v, 3) for n, v in weights.items()})
+    return weights
+
+
+def mixture_draws(
+    draws: dict[str, np.ndarray], weights: dict[str, float], n_draws: int, rng: np.random.Generator
+) -> np.ndarray:
+    """Sample whole-draw vectors from the weighted mixture of models' draws."""
+    names = list(draws)
+    p = np.array([weights.get(n, 0.0) for n in names])
+    p = p / p.sum()
+    choice = rng.choice(len(names), size=n_draws, p=p)
+    out = np.empty((n_draws, draws[names[0]].shape[1]))
+    for j, name in enumerate(names):
+        idx = np.flatnonzero(choice == j)
+        if idx.size:
+            src = draws[name]
+            out[idx] = src[rng.integers(0, src.shape[0], size=idx.size)]
+    return out

@@ -1,41 +1,33 @@
-"""Build processed panel, W matrix, and strata frame from interim data."""
+"""Build the processed panel (historical elections + the 2027 forecast rows) and W."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from dotenv import load_dotenv
+import pandas as pd
 from loguru import logger
 
 
 def main() -> None:
-    load_dotenv()
-    processed = Path("data/processed")
-    interim = Path("data/interim")
-    external = Path("data/external")
+    processed, interim = Path("data/processed"), Path("data/interim")
 
-    logger.info("Building panel from interim data")
+    from ngforecast.data.inec_historical import load_results, load_totals
+    from ngforecast.features.panel import build_panel, load_candidates, save_panel
 
-    from ngforecast.features.panel import build_panel, save_panel
-
-    panel = build_panel(
-        results_path=interim / "results.parquet",
-        macro_dir=interim,
-        violence_path=interim / "violence_index.parquet",
-    )
+    covariates = {
+        "violence": pd.read_parquet(interim / "violence_index.parquet"),
+        "poverty": pd.read_parquet(interim / "poverty.parquet"),
+    }
+    results, totals, cands = load_results(), load_totals(), load_candidates()
+    hist = build_panel(results, totals, cands, covariates)
+    future = build_panel(results, totals, cands, covariates, years=[2027])
+    panel = pd.concat([hist, future], ignore_index=True)
     save_panel(panel, processed / "panel.parquet")
 
     from ngforecast.features.weights import build_W, save_W
 
-    W = build_W()
-    save_W(W, processed / "W.npz")
-
-    from ngforecast.features.strata import build_strata_frame, save_strata
-
-    strata = build_strata_frame(external / "census_marginals.csv")
-    save_strata(strata, processed / "strata.parquet")
-
-    logger.info("Panel build complete")
+    save_W(build_W(), processed / "W.npz")
+    logger.info("Panel build complete: years {}", sorted(panel.year.unique()))
 
 
 if __name__ == "__main__":

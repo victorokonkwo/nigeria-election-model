@@ -34,7 +34,7 @@ units:
   - {code: NA, name: Nasarawa, zone: North-Central}
   - {code: NI, name: Niger, zone: North-Central}
   - {code: OG, name: Ogun, zone: South-West}
-  - {code: ON, name: Ondo, zone: South-West}
+  - {code: "ON", name: Ondo, zone: South-West}
   - {code: OS, name: Osun, zone: South-West}
   - {code: OY, name: Oyo, zone: South-West}
   - {code: PL, name: Plateau, zone: North-Central}
@@ -55,23 +55,52 @@ zones:
 
 # ── Win condition: §134(2) ───────────────────
 # A candidate wins outright if:
-#   (a) they have the highest number of votes nationally, AND
-#   (b) they secure ≥ 25% of the votes cast in at least 2/3 of
-#       all states + FCT  →  ⌈37 × 2/3⌉ = 25 units
+#   (a) they have the highest number of votes cast nationally, AND
+#   (b) they have "not less than one-quarter of the votes cast at the
+#       election in each of at least two-thirds of all the States in the
+#       Federation and the Federal Capital Territory, Abuja."
+#
+# How (b) counts the FCT is a legal question, so it is configurable:
+#   fct_as_state     — FCT is the 37th unit; need 2/3 × 37 = 24⅔ units.
+#                      Held in Obi v INEC / Atiku v INEC (Supreme Court,
+#                      26 Oct 2023), applying §299. DEFAULT (binding law).
+#   states_only      — 2/3 × 36 states = 24 states; FCT ignored.
+#   states_plus_fct  — 24 of 36 states AND ≥ 25% in FCT. The petitioners'
+#                      reading, rejected in 2023; kept for sensitivity only.
+#
+# A fractional requirement (24⅔) is resolved by `fractional_rule`:
+#   awolowo_v_shagari — Awolowo v Shagari (SC.62/1979): 12⅔ of 19 states
+#                       meant 12 states at 25% plus ⅔ of 25% in a 13th.
+#                       Here: 24 units at ≥ 25% + one more unit at ≥ 16.67%.
+#                       DEFAULT (only Supreme Court precedent on fractions).
+#   ceil              — round up: 25 full units at ≥ 25% (strictest).
+#   floor             — round down: 24 full units at ≥ 25% (most lenient).
 win_rule:
   majority: plurality           # highest vote count (not necessarily >50%)
-  spread_threshold: 0.25        # 25% of votes cast in each qualifying state
-  spread_minimum_units: 25      # must meet threshold in ≥ 25 of 37 units
-  formula: "ceil(total_units * 2 / 3)"
+  spread_threshold: 0.25        # one-quarter of votes cast in a unit
+  spread_fraction: "2/3"        # "two-thirds of all the States" (exact)
+  fct_interpretation: fct_as_state
+  fractional_rule: awolowo_v_shagari
+  fct_code: FC
 
-# ── Runoff: §134(4) ─────────────────────────
-# If no candidate satisfies the win rule, a runoff is held between
-# the top-two candidates within 21 days.
+# ── Second and third elections: §134(3)–(5) ──
+# §134(3): if nobody wins under (2), a second election is held between
+#   (a) the candidate with the highest number of votes, and
+#   (b) of the remaining candidates, the one with "a majority of votes in
+#       the highest number of States" (tie → highest total votes).
+#   This is NOT simply the national runner-up.
+# §134(4): INEC arranges it within seven days. Winner needs a majority of
+#   votes cast AND the same one-quarter / two-thirds spread as (2)(b).
+# §134(5): if nobody wins under (4), a third election between the same two
+#   is held within seven days; a simple majority of votes cast suffices.
 runoff:
   triggered_when: "no candidate meets win_rule"
-  candidates: 2                  # top two by national vote
-  days_after: 21
-  win_rule:
-    majority: simple_majority    # >50% of valid votes in round 2
-    spread_threshold: 0.25
-    spread_minimum_units: 25
+  candidates: 2
+  second_candidate_rule: most_states_won   # §134(3)(b)
+  days_after: 7
+  second_election:
+    majority: simple_majority    # >50% of votes cast
+    spread_required: true        # §134(4)(b), same spread rule as win_rule
+  third_election:
+    days_after: 7
+    majority: simple_majority    # §134(5), no spread requirement

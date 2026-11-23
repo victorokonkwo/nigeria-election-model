@@ -25,11 +25,9 @@ rule all:
 rule pull_data:
     output:
         directory(DATA_RAW / "inec"),
-        directory(DATA_RAW / "nbs"),
-        directory(DATA_RAW / "cbn"),
-        directory(DATA_RAW / "oil"),
+        directory(DATA_RAW / "poverty"),
+        directory(DATA_RAW / "macro"),
         directory(DATA_RAW / "acled"),
-        directory(DATA_RAW / "polls"),
     log:
         "logs/pull_data.log",
     shell:
@@ -44,7 +42,7 @@ rule clean_data:
     log:
         "logs/clean_data.log",
     shell:
-        "python -m ngforecast.data.validate --interim {output} 2>&1 | tee {log}"
+        "python scripts/build_interim.py 2>&1 | tee {log}"
 
 
 # ── Stage 2: Features ────────────────────────

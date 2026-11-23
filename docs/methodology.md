@@ -59,8 +59,16 @@ For each of $S = 20{,}000$ simulations:
 
 ## Constitutional Rule (§134)
 
-A candidate wins if:
-- **(a)** They have the highest national vote count (plurality), AND
-- **(b)** They receive ≥ 25% of votes in at least $\lceil 37 \times 2/3 \rceil = 25$ states + FCT
+**Outright win, §134(2).** A candidate wins if:
+- **(a)** they have the highest number of votes cast nationally (plurality), AND
+- **(b)** they have at least one-quarter of the votes cast in each of at least two-thirds of all the States and the FCT.
 
-If no candidate satisfies both conditions, a runoff between the top two is held within 21 days.
+Following *Obi v INEC* and *Atiku v INEC* (Supreme Court, 26 Oct 2023), the FCT is treated as the 37th unit (§299) and is not a separate requirement. Two-thirds of 37 is $24\tfrac{2}{3}$; following *Awolowo v Shagari* (SC.62/1979), the fraction is met by **24 units at ≥ 25% plus a 25th unit at ≥ $\tfrac{2}{3} \times 25\% \approx 16.67\%$**.
+
+Alternative readings are configurable in `config/constitution.yaml` for sensitivity analysis: `fct_interpretation` ∈ {`fct_as_state`, `states_only`, `states_plus_fct`} and `fractional_rule` ∈ {`awolowo_v_shagari`, `ceil`, `floor`}. See ADR-003.
+
+**Second election, §134(3)–(4).** If nobody wins, INEC holds a second election within seven days between (a) the national vote leader and (b) the remaining candidate who led in the most units (ties go to the higher national total). This is not necessarily the national runner-up. The winner needs a majority of votes cast plus the same spread as (b).
+
+**Third election, §134(5).** If the second election produces no winner, a third election between the same two candidates is held within seven days and decided by a simple majority.
+
+The engine reports `runoff_probability` (a second election is needed) and `third_election_probability`.

@@ -6,9 +6,8 @@ stages:
         - config/data_sources.yaml
       outs:
         - data/raw/inec
-        - data/raw/nbs
-        - data/raw/cbn
-        - data/raw/oil
+        - data/raw/poverty
+        - data/raw/macro
         - data/raw/acled
         - data/raw/polls
 

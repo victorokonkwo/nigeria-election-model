@@ -67,3 +67,19 @@ def score_summary(predicted: np.ndarray, actual: np.ndarray) -> dict[str, float]
         "rmse": rmse(predicted, actual),
         "mae": mae(predicted, actual),
     }
+
+
+def crps_sample(draws: np.ndarray, actual: np.ndarray) -> float:
+    """Mean CRPS from predictive draws (S, n) against outcomes (n,). Lower is better.
+
+    CRPS = E|X - y| - 0.5 E|X - X'| (Gneiting & Raftery, 2007), estimated from
+    the sorted-sample identity for E|X - X'|.
+    """
+    draws = np.asarray(draws, dtype=float)
+    actual = np.asarray(actual, dtype=float)
+    s = draws.shape[0]
+    term1 = np.mean(np.abs(draws - actual[None, :]), axis=0)
+    x = np.sort(draws, axis=0)
+    i = np.arange(1, s + 1)[:, None]
+    term2 = np.sum((2 * i - s - 1) * x, axis=0) / (s * s)
+    return float(np.mean(term1 - term2))

@@ -11,7 +11,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # 2. Create environment & install
 uv sync
 
-# 3. Pull raw data (requires API keys in .env)
+# 3. Pull raw data
 make data
 
 # 4. Train models
@@ -52,7 +52,7 @@ Each stage is independently reproducible via DVC and version-locked dependencies
 
 - **Spatial panel models** (SAR/SEM via R's `splm`) capture cross-state contagion.
 - **Game-theoretic scenarios** model coalition dynamics, candidate entry/exit, and voter migration via QRE.
-- **Monte Carlo engine** draws correlated errors at national, zonal, and state levels, then applies the §134 constitutional rule (majority + 25%-in-24-states) to determine win vs. runoff.
+- **Monte Carlo engine** draws correlated errors at national, zonal, and state levels, then applies the §134 constitutional rule (national plurality + ≥ 25% in two-thirds of the 36 states and FCT, read per the 2023 Supreme Court ruling; see ADR-003) to determine an outright win or a second/third election.
 - **Forecast log** is append-only and timestamped for public auditability.
 
 ## Requirements

@@ -1,0 +1,80 @@
+# ── Presidential candidates and party lineage ──
+# Pre-election facts only (known before election day), used for:
+#   * the target: the incumbent (ruling) party's vote share
+#   * home-region covariates (candidate's home state / zone)
+#   * party lineage for lagged shares across mergers
+#
+# Home state = state of origin / political base. VERIFY against INEC
+# candidate lists before publication.
+#
+# 1999 has no incumbent party (transition from military rule), so it enters
+# only as the lag for 2003.
+
+elections:
+  1999:
+    incumbent_party: null
+    candidates:
+      PDP: {name: Olusegun Obasanjo, home_state: OG}
+      APP/AD: {name: Olu Falae, home_state: "ON"}
+  2003:
+    incumbent_party: PDP
+    incumbent_running: true
+    candidates:
+      PDP: {name: Olusegun Obasanjo, home_state: OG}
+      ANPP: {name: Muhammadu Buhari, home_state: KT}
+      APGA: {name: Chukwuemeka Odumegwu Ojukwu, home_state: AN}
+    major_challengers: [ANPP]
+  2007:
+    incumbent_party: PDP
+    incumbent_running: false
+    candidates:
+      PDP: {name: Umaru Musa Yar'Adua, home_state: KT}
+      ANPP: {name: Muhammadu Buhari, home_state: KT}
+      AC: {name: Atiku Abubakar, home_state: AD}
+    major_challengers: [ANPP, AC]
+  2011:
+    incumbent_party: PDP
+    incumbent_running: true
+    candidates:
+      PDP: {name: Goodluck Jonathan, home_state: BY}
+      CPC: {name: Muhammadu Buhari, home_state: KT}
+      ACN: {name: Nuhu Ribadu, home_state: AD}
+      ANPP: {name: Ibrahim Shekarau, home_state: KN}
+    major_challengers: [CPC, ACN]
+  2015:
+    incumbent_party: PDP
+    incumbent_running: true
+    candidates:
+      PDP: {name: Goodluck Jonathan, home_state: BY}
+      APC: {name: Muhammadu Buhari, home_state: KT}
+    major_challengers: [APC]
+  2019:
+    incumbent_party: APC
+    incumbent_running: true
+    candidates:
+      APC: {name: Muhammadu Buhari, home_state: KT}
+      PDP: {name: Atiku Abubakar, home_state: AD}
+    major_challengers: [PDP]
+  2023:
+    incumbent_party: APC
+    incumbent_running: false
+    candidates:
+      APC: {name: Bola Ahmed Tinubu, home_state: LA}
+      PDP: {name: Atiku Abubakar, home_state: AD}
+      LP: {name: Peter Obi, home_state: AN}
+      NNPP: {name: Rabiu Musa Kwankwaso, home_state: KN}
+    major_challengers: [PDP, LP, NNPP]
+  2027:
+    incumbent_party: APC
+    incumbent_running: true
+    candidates:
+      APC: {name: Bola Ahmed Tinubu, home_state: LA}
+    # Opposition line-up is uncertain: handled by the scenario layer
+    # (config/scenarios.yaml), not fixed here.
+    major_challengers: []
+
+# Lagged share of a party = its own share last election, or the summed shares
+# of the parties it was formed from. APC was formed in 2013 from ACN, CPC and
+# ANPP (plus an APGA faction, omitted as its vote cannot be apportioned).
+lineage:
+  APC: {2011: [ACN, CPC, ANPP]}
