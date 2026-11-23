@@ -38,7 +38,9 @@ class SamplerConfig:
     draws: int = 1000
     tune: int = 1000
     chains: int = 4
-    target_accept: float = 0.99  # 0.95 left divergences in 2-observation national fits (protocol §7)
+    target_accept: float = (
+        0.99  # 0.95 left divergences in 2-observation national fits (protocol §7)
+    )
     seed: int = 2027
 
 
@@ -51,6 +53,7 @@ class FittedModel:
     spatial: bool
     phi_fixed: float | None = None
     diagnostics: dict = field(default_factory=dict)
+    zone_index: np.ndarray | None = None  # set when the model has a shared zone shock
 
 
 # ── National swing ───────────────────────────
@@ -89,8 +92,13 @@ def fit_state(
     spatial: bool = True,
     phi_fixed: float | None = None,
     phi_prior: tuple[float, float] = (0.0, 1.0),
+    zone_shock: bool = False,
 ) -> tuple[dict, dict]:
     """Fit the state-deviation model.
+
+    ``zone_shock=True`` adds an election-specific shock shared by the states of
+    each geopolitical zone, omega * z_{zone,t}, so that prediction errors are
+    correlated within zones (exploratory; not one of the v2 candidates).
 
     ``phi_fixed=1.0`` gives the swing formulation: the change in a state's
     deviation, d_t - d_{t-1}, is modelled (spatially, if ``spatial``), so the
@@ -109,6 +117,8 @@ def fit_state(
     # Swing:  (I - rho W)(d_t - phi d_{t-1}) = X beta + ...   (phi fixed)
     y = d if phi_fixed is None else d - phi_fixed * d_lag
     Wy = y @ W.T  # (W y_t) for each year, as rows
+    zones = train.loc[train.year == years[0], "zone"].to_numpy()
+    zone_labels, zone_idx = np.unique(zones, return_inverse=True)
 
     with pm.Model():
         rho = pm.Uniform("rho", -1.0, 1.0) if spatial else 0.0
@@ -123,14 +133,16 @@ def fit_state(
 
         x_term = pt.tensordot(X, beta, axes=[[2], [0]]) if k else 0.0
         mean = alpha + phi * d_lag + x_term + u[None, :]
+        if zone_shock:
+            omega = pm.HalfNormal("omega", 0.3)
+            z_raw = pm.Normal("z_raw", 0.0, 1.0, shape=(len(years), len(zone_labels)))
+            mean = mean + omega * z_raw[:, zone_idx]
         resid = y - rho * Wy - mean
         T = len(years)
         logdet = pt.sum(pt.log1p(-rho * eig)) if spatial else 0.0
         pm.Potential(
             "sar_loglik",
-            T * logdet
-            - T * n * pt.log(sigma)
-            - 0.5 * pt.sum(resid**2) / sigma**2,
+            T * logdet - T * n * pt.log(sigma) - 0.5 * pt.sum(resid**2) / sigma**2,
         )
         idata = pm.sample(
             cfg.draws,
@@ -142,7 +154,10 @@ def fit_state(
         )
     names = (["beta"] if k else []) + ["alpha", "u", "sigma", "tau"] + (["rho"] if spatial else [])
     names += ["phi"] if phi_fixed is None else []
+    names += ["omega"] if zone_shock else []
     draws = _flatten(idata, names)
+    if zone_shock:
+        draws["zone_index"] = zone_idx
     if not k:
         draws["beta"] = np.zeros((len(draws["sigma"]), 0))
     if phi_fixed is not None:
@@ -159,13 +174,23 @@ def fit(
     spatial: bool = True,
     phi_fixed: float | None = None,
     phi_prior: tuple[float, float] = (0.0, 1.0),
+    zone_shock: bool = False,
 ) -> FittedModel:
     cfg = cfg or SamplerConfig()
     covariates = DEFAULT_COVARIATES if covariates is None else covariates
     national, nat_diag = fit_national(train, cfg)
     state, st_diag = fit_state(
-        train, W, states, covariates, cfg, spatial=spatial, phi_fixed=phi_fixed, phi_prior=phi_prior
+        train,
+        W,
+        states,
+        covariates,
+        cfg,
+        spatial=spatial,
+        phi_fixed=phi_fixed,
+        phi_prior=phi_prior,
+        zone_shock=zone_shock,
     )
+    zone_index = state.pop("zone_index", None)
     logger.info(
         "Fitted on {}: rho={:.2f}, phi={:.2f}, max r_hat={:.3f}",
         sorted(train.year.unique()),
@@ -181,6 +206,7 @@ def fit(
         spatial=spatial,
         phi_fixed=phi_fixed,
         diagnostics={"national": nat_diag, "state": st_diag},
+        zone_index=zone_index,
     )
 
 
@@ -223,6 +249,10 @@ def predict(
     lag_term = st["phi"][:, None] * d_lag[None, :]
     mean = st["alpha"][:, None] + st["beta"] @ X.T + st["u"] + (0.0 if swing else lag_term)
     eps = rng.normal(0.0, st["sigma"][:, None], size=(S, n))
+    if model.zone_index is not None:
+        n_z = int(model.zone_index.max()) + 1
+        shock = rng.normal(0.0, 1.0, size=(S, n_z)) * st["omega"][:, None]
+        eps = eps + shock[:, model.zone_index]
     if model.spatial:
         filtered = np.empty((S, n))
         eye = np.eye(n)

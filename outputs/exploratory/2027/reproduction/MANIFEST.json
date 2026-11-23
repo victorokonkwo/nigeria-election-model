@@ -1,0 +1,19 @@
+{
+  "git_commit": "d7332a7fc29f1560ff51e087c35404862d72edce",
+  "uncommitted_code_at_run": [
+    "config/data_sources.yaml",
+    "scripts/run_backtest.py",
+    "src/ngforecast/data/inec.py",
+    "scripts/exploratory_2027.py",
+    "scripts/exploratory_review.py",
+    "scripts/sbc.py"
+  ],
+  "protocol_sha256": "cdeb897b8f0974117852cdc1246930f6b0f0fb61a4cafb373327f2526380bdd5",
+  "panel_sha256": "3aa38ca6c1879c260aad2c05c0e254eebd3278b274e29b05edbdbf9ebe88b95f",
+  "weights_sha256": "010005e64443fc01d0be14f0c4d92053fac3f47cbf097703bb2b5088913ecfff",
+  "outputs_sha256": {
+    "conditional.csv": "b355b485dce94f08fb89067c5949f0c6867885c2e89a02fb520f8fcc99148d26",
+    "forecast.json": "f3cdc907250d9bdebb6af6c3ecb5c0d3e857f6d78f70963fcc4bc6233517c15b",
+    "states.csv": "60ddd364b87f07a0fe54f9f07e7a6c59165ed81dfa040919b41c0707bb62d217"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "2015_pp_region_zs": {
+    "omega_mean": 0.8295810387440588,
+    "omega_sd": 0.14607153586176683,
+    "sigma_mean": 0.756861093961792,
+    "diagnostics": {
+      "national": {
+        "max_rhat": 1.0077946609852952,
+        "min_ess_bulk": 766.8487455594606,
+        "divergences": 0
+      },
+      "state": {
+        "max_rhat": 1.0044135512241414,
+        "min_ess_bulk": 1593.7856483834148,
+        "divergences": 0
+      }
+    }
+  },
+  "2015_ps_region_zs": {
+    "omega_mean": 0.9624813386874957,
+    "omega_sd": 0.1496916856025107,
+    "sigma_mean": 0.9369000759899068,
+    "diagnostics": {
+      "national": {
+        "max_rhat": 1.0077946609852952,
+        "min_ess_bulk": 766.8487455594606,
+        "divergences": 0
+      },
+      "state": {
+        "max_rhat": 1.004786225002983,
+        "min_ess_bulk": 2826.6594402589276,
+        "divergences": 0
+      }
+    }
+  },
+  "2019_pp_region_zs": {
+    "omega_mean": 0.816730514935796,
+    "omega_sd": 0.1272695453896105,
+    "sigma_mean": 0.7036804099116373,
+    "diagnostics": {
+      "national": {
+        "max_rhat": 1.005175986524676,
+        "min_ess_bulk": 1308.9509319933095,
+        "divergences": 0
+      },
+      "state": {
+        "max_rhat": 1.0041598227967907,
+        "min_ess_bulk": 1304.4348894333477,
+        "divergences": 0
+      }
+    }
+  },
+  "2019_ps_region_zs": {
+    "omega_mean": 0.9683954876434931,
+    "omega_sd": 0.13095858864252768,
+    "sigma_mean": 0.8264943852427374,
+    "diagnostics": {
+      "national": {
+        "max_rhat": 1.005175986524676,
+        "min_ess_bulk": 1308.9509319933095,
+        "divergences": 0
+      },
+      "state": {
+        "max_rhat": 1.0062765563837681,
+        "min_ess_bulk": 1597.899117748552,
+        "divergences": 0
+      }
+    }
+  },
+  "2023_pp_region_zs": {
+    "omega_mean": 0.7762059923746769,
+    "omega_sd": 0.11148368093862608,
+    "sigma_mean": 0.6582448601874445,
+    "diagnostics": {
+      "national": {
+        "max_rhat": 1.0039719902086803,
+        "min_ess_bulk": 1225.5739495900002,
+        "divergences": 0
+      },
+      "state": {
+        "max_rhat": 1.004148216429964,
+        "min_ess_bulk": 1764.7859875195118,
+        "divergences": 0
+      }
+    }
+  },
+  "2023_ps_region_zs": {
+    "omega_mean": 0.923358862366583,
+    "omega_sd": 0.12547329163675436,
+    "sigma_mean": 0.7737784261468036,
+    "diagnostics": {
+      "national": {
+        "max_rhat": 1.0039719902086803,
+        "min_ess_bulk": 1225.5739495900002,
+        "divergences": 0
+      },
+      "state": {
+        "max_rhat": 1.0034916665255083,
+        "min_ess_bulk": 1578.4651785055628,
+        "divergences": 0
+      }
+    }
+  }
+}

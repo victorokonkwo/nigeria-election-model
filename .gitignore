@@ -62,3 +62,7 @@ paper/paperorchestra_*.log
 paper/manuscript/pages/
 paper/manuscript/*.aux
 paper/manuscript/*.log
+
+# Large predictive draws; regenerate with scripts/run_backtest.py --tag v2_draws --save-draws
+outputs/backtest/*/draws.npz
+outputs/exploratory/*/draws.npz

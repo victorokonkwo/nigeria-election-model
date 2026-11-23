@@ -1,0 +1,155 @@
+{
+  "alpha": {
+    "n": 100,
+    "chi2_p_uniform": 0.22482064155775416,
+    "bin_counts": [
+      7,
+      9,
+      8,
+      13,
+      8,
+      19,
+      8,
+      9,
+      8,
+      11
+    ],
+    "share_reps_with_divergences": 0.0
+  },
+  "beta_home_region": {
+    "n": 100,
+    "chi2_p_uniform": 0.5141236202310753,
+    "bin_counts": [
+      7,
+      6,
+      12,
+      13,
+      15,
+      11,
+      7,
+      9,
+      12,
+      8
+    ],
+    "share_reps_with_divergences": 0.0
+  },
+  "beta_opp_home_region": {
+    "n": 100,
+    "chi2_p_uniform": 0.22482064155775416,
+    "bin_counts": [
+      12,
+      10,
+      10,
+      17,
+      5,
+      13,
+      7,
+      7,
+      7,
+      12
+    ],
+    "share_reps_with_divergences": 0.0
+  },
+  "nat_gamma": {
+    "n": 100,
+    "chi2_p_uniform": 0.6993125708664081,
+    "bin_counts": [
+      11,
+      10,
+      11,
+      14,
+      10,
+      9,
+      8,
+      11,
+      4,
+      12
+    ],
+    "share_reps_with_divergences": 0.0
+  },
+  "nat_mu": {
+    "n": 100,
+    "chi2_p_uniform": 0.8343082601934076,
+    "bin_counts": [
+      10,
+      9,
+      11,
+      12,
+      5,
+      14,
+      9,
+      9,
+      11,
+      10
+    ],
+    "share_reps_with_divergences": 0.0
+  },
+  "nat_sigma": {
+    "n": 100,
+    "chi2_p_uniform": 0.7597562788720698,
+    "bin_counts": [
+      11,
+      10,
+      8,
+      13,
+      10,
+      11,
+      14,
+      5,
+      9,
+      9
+    ],
+    "share_reps_with_divergences": 0.0
+  },
+  "phi": {
+    "n": 100,
+    "chi2_p_uniform": 0.09093597657980516,
+    "bin_counts": [
+      12,
+      15,
+      15,
+      5,
+      6,
+      15,
+      6,
+      8,
+      7,
+      11
+    ],
+    "share_reps_with_divergences": 0.0
+  },
+  "sigma": {
+    "n": 100,
+    "chi2_p_uniform": 0.13728235312658446,
+    "bin_counts": [
+      9,
+      15,
+      6,
+      8,
+      13,
+      16,
+      9,
+      12,
+      4,
+      8
+    ],
+    "share_reps_with_divergences": 0.0
+  },
+  "tau": {
+    "n": 100,
+    "chi2_p_uniform": 0.554420435872857,
+    "bin_counts": [
+      8,
+      9,
+      11,
+      4,
+      15,
+      9,
+      10,
+      13,
+      10,
+      11
+    ],
+    "share_reps_with_divergences": 0.0
+  }
+}

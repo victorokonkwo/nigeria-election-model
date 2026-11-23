@@ -1,0 +1,9 @@
+{
+  "commit": "d7332a7fc29f1560ff51e087c35404862d72edce",
+  "checked_at": "2026-11-23T19:52:15Z",
+  "files": {
+    "data/processed/panel.parquet": {"reproduced": "3aa38ca6c1879c260aad2c05c0e254eebd3278b274e29b05edbdbf9ebe88b95f", "issued": "3aa38ca6c1879c260aad2c05c0e254eebd3278b274e29b05edbdbf9ebe88b95f", "identical": true},
+    "outputs/preregistered/2027/states.csv": {"reproduced": "60ddd364b87f07a0fe54f9f07e7a6c59165ed81dfa040919b41c0707bb62d217", "issued": "60ddd364b87f07a0fe54f9f07e7a6c59165ed81dfa040919b41c0707bb62d217", "identical": true},
+    "outputs/preregistered/2027/conditional.csv": {"reproduced": "b355b485dce94f08fb89067c5949f0c6867885c2e89a02fb520f8fcc99148d26", "issued": "b355b485dce94f08fb89067c5949f0c6867885c2e89a02fb520f8fcc99148d26", "identical": true}
+  }
+}

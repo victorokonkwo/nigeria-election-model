@@ -1,0 +1,7 @@
+year,mode,crps,rmse,cov90,weights
+2015,forecast,9.032,15.797,1.0,"{""ps_null"": 0.167, ""ps_home"": 0.167, ""ps_region"": 0.167, ""sar_region"": 0.167, ""pp_region"": 0.167, ""lvl_home"": 0.167}"
+2015,oracle,6.819,10.673,1.0,"{""ps_null"": 0.167, ""ps_home"": 0.167, ""ps_region"": 0.167, ""sar_region"": 0.167, ""pp_region"": 0.167, ""lvl_home"": 0.167}"
+2019,forecast,8.231,12.613,1.0,"{""ps_region"": 0.16, ""pp_region"": 0.84}"
+2019,oracle,7.374,10.867,1.0,"{""ps_region"": 0.16, ""pp_region"": 0.84}"
+2023,forecast,14.696,25.469,0.892,"{""pp_region"": 1.0}"
+2023,oracle,9.44,16.319,0.865,"{""pp_region"": 1.0}"

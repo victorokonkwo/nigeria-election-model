@@ -1,0 +1,7 @@
+{
+  "reproduction_byte_identical": {
+    "states.csv": true,
+    "conditional.csv": true
+  },
+  "k_narrowing": 0.51
+}

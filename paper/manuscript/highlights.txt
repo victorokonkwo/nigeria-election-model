@@ -1,0 +1,6 @@
+Highlights
+- State-level Nigerian presidential results 1999-2023, reconciled to INEC totals
+- Section 134 spread rule coded under four legal readings, incl. Obi v INEC
+- Given the national vote, state forecasts beat swing baselines in each election
+- National vote not forecastable from its history; threshold counts miscalibrated
+- Two pre-registered 2027 forecasts with evaluation rules fixed in advance

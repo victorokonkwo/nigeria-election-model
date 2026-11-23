@@ -1,0 +1,70 @@
+{
+  "pus_sigma": {
+    "2015": 1.9932154109764177,
+    "2019": 1.6744648527867065,
+    "2023": 1.5622168284642823
+  },
+  "noregion_weights": {
+    "2015": {
+      "ps_null": 0.333,
+      "ps_home": 0.333,
+      "lvl_home": 0.333
+    },
+    "2019": {
+      "ps_null": 0.0,
+      "ps_home": 0.723,
+      "lvl_home": 0.277
+    },
+    "2023": {
+      "ps_null": 0.0,
+      "ps_home": 0.507,
+      "lvl_home": 0.493
+    }
+  },
+  "threshold_misses": [
+    {
+      "year": 2015,
+      "sd_logit_median": 1.7296494491684102,
+      "sd_logit_actual": 1.9381796570918193,
+      "above25_predicted_below": [
+        "KD",
+        "OS"
+      ],
+      "below25_predicted_above": [
+        "GO"
+      ]
+    },
+    {
+      "year": 2019,
+      "sd_logit_median": 1.102579179426495,
+      "sd_logit_actual": 1.0634097484059486,
+      "above25_predicted_below": [
+        "AB",
+        "BY",
+        "DE",
+        "EB"
+      ],
+      "below25_predicted_above": []
+    },
+    {
+      "year": 2023,
+      "sd_logit_median": 0.8599361114539469,
+      "sd_logit_actual": 1.2568594312026315,
+      "above25_predicted_below": [
+        "JI",
+        "KD",
+        "KE",
+        "KN",
+        "KT",
+        "SO",
+        "ZA"
+      ],
+      "below25_predicted_above": [
+        "DE",
+        "ED",
+        "FC"
+      ]
+    }
+  ],
+  "has_zone_shock": true
+}

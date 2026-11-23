@@ -62,3 +62,53 @@ them, under the scenario that matches the actual main challenger:
 - All code, data and outputs are versioned in git. This forecast counts as
   pre-registered only once the commit containing it is public and
   timestamped, i.e. pushed or deposited (OSF/Zenodo), before 27 Feb 2027.
+
+## Amendment 1 (2026-11-23): evaluation rules fixed before the election
+This amendment changes no forecast number. It fixes, in advance, how the
+forecast will be scored. It was written after a review of the paper.
+
+**Scope and validity**
+- The forecast assumes that APC's candidate is the sitting president
+  (`incumbent_running = 1`). If APC nominates someone else, the forecast is
+  still scored and the failed assumption is reported.
+
+**Scenario selection**
+- The scenario scored is the home zone of the *main challenger*: the
+  presidential candidate whose party, or coalition of parties, had the highest
+  combined 2023 national vote among the candidates on the 2027 ballot.
+- If that cannot be determined from the ballot (for example, a coalition of
+  parties that did not exist in 2023), the opposition candidate with the most
+  2027 votes is used, and the choice is reported as outcome-informed.
+- All six scenarios are also reported.
+
+**Baselines** (all computed from the 2023 results)
+1. Uniform swing, logit scale (as in `scripts/run_backtest.py`).
+2. Probabilistic uniform swing, reconciled to the national share, with logit
+   noise equal to the RMS of uniform-swing residuals over all training
+   elections (as in `scripts/exploratory_review2.py`).
+3. `ps_null`, fitted on all five elections with the v2 sampler settings.
+4. National no-change forecast: APC repeats 36.6%.
+
+**Scores and decision rules.** Every score is computed in forecast mode and in
+oracle mode, with the true national share supplied. The forecast is judged to
+have:
+- **Beaten the baselines on state skill (H1)** if its oracle-mode state CRPS
+  is below that of every baseline 1–3.
+- **Beaten no-change on the national vote (H2)** if its absolute national
+  error is below that of baseline 4. Coverage of the national 90% interval is
+  also reported.
+- **Calibrated state intervals (H3)** if 30–36 of the 37 outcomes, a band
+  around the nominal 33, lie inside the 90% intervals.
+- **Got the §134 spread event right (H4)**, assessed by the log score of
+  P(spread met):
+  - in forecast mode, compared with a climatological reference of 0.92
+    ((5 + 1/2)/(5 + 1): the spread was met in all five elections with state
+    results);
+  - in oracle mode, using the conditional curve evaluated at the true
+    national share.
+
+**Joint scores.** The energy score over the 37 units, and the ranked
+probability score of the count of units at 25%, are also reported.
+
+With one election, none of these outcomes is conclusive, and they will be
+reported as such.

@@ -120,6 +120,12 @@ def main() -> None:
     ap.add_argument("--panel", default="data/processed/panel.parquet")
     ap.add_argument("--draws", type=int, default=1000)
     ap.add_argument("--tag", default="v2")
+    ap.add_argument(
+        "--save-draws",
+        action="store_true",
+        help="also write draws.npz (state/national draws per year, mode, model); "
+        "does not change any result",
+    )
     args = ap.parse_args()
 
     out = Path("outputs/backtest") / args.tag
@@ -139,6 +145,7 @@ def main() -> None:
 
     metrics, preds, posterior, weights_log = [], [], {}, {}
     holdout_logdens: dict[int, dict[str, np.ndarray]] = {}  # oracle-mode, per past target
+    saved_draws: dict[str, np.ndarray] = {}
 
     for t in TARGETS:
         train = panel[panel.year < t]
@@ -177,6 +184,12 @@ def main() -> None:
             nat_draws = runs["ps_null"]["national"]
             runs["uniform_swing"] = {"state": uniform_swing(test, nat_draws), "national": nat_draws}
 
+            if args.save_draws:
+                for name, r in runs.items():
+                    saved_draws[f"{t}_{mode}_{name}_state"] = r["state"].astype(np.float32)
+                    saved_draws[f"{t}_{mode}_{name}_national"] = np.asarray(
+                        r["national"], dtype=np.float32
+                    )
             for name, r in runs.items():
                 metrics.append(
                     {
@@ -229,6 +242,8 @@ def main() -> None:
         **{f"{t}_{n}": holdout_logdens[t][n] for t in TARGETS for n in CANDIDATES},
     )
 
+    if args.save_draws:
+        np.savez_compressed(out / "draws.npz", **saved_draws)
     m = pd.DataFrame(metrics)
     m.to_csv(out / "metrics.csv", index=False)
     pd.concat(preds).to_parquet(out / "predictions.parquet", index=False)
