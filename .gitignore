@@ -55,3 +55,10 @@ logs/
 # ── DVC ──────────────────────────────────────
 /data/raw.dvc
 /data/processed.dvc
+
+# PaperOrchestra working output (regenerable)
+paper/output_*/
+paper/paperorchestra_*.log
+paper/manuscript/pages/
+paper/manuscript/*.aux
+paper/manuscript/*.log

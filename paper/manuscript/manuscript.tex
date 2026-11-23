@@ -1,0 +1,329 @@
+\documentclass[preprint,12pt,authoryear]{elsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\journal{International Journal of Forecasting}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{How predictable are Nigerian presidential elections at the state level? A pre-registered probabilistic forecast under the \S134 constitutional rule}
+
+\author[inst1]{Anonymous Author}
+\affiliation[inst1]{organization={Institution}}
+
+\begin{abstract}
+Nigeria's Constitution requires a presidential winner to win a national plurality and at least 25\% of the vote in two-thirds of the 36 states and the Federal Capital Territory (\S134), so whether a candidate clears this threshold is a state-level forecasting problem. We assemble a validated state-level presidential results dataset for 1999--2023, implement \S134 in code under competing legal readings, and model the incumbent party's state vote share as a national swing plus state deviations in a Bayesian framework. Using leave-future-out backtests on 2015, 2019 and 2023, a written evaluation protocol frozen before the final run, and prequential stacking whose weights never see the target election, we find that when the true national vote is supplied the stacked forecast lowers the mean continuous ranked probability score from 11.05 to 7.86 percentage points relative to uniform swing. With the model's own national forecast, the gain largely disappears (10.66 versus 10.93) because the national vote, with forecast errors of up to 17 points, cannot be predicted from two to five past elections. A spatial autoregressive term does not improve out-of-sample skill, and the probability of meeting the \S134 spread was under-forecast. We issue a pre-registered 2027 forecast, publicly timestamped before the election, to be scored once results are available.
+\end{abstract}
+
+\begin{keyword}
+election forecasting \sep proper scoring rules \sep forecast combination \sep pre-registration \sep small samples \sep Nigeria
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+\label{sec:intro}
+Forecasting presidential elections in data-poor democracies is difficult and rarely evaluated with the rigour now standard in data-rich settings. In Nigeria, pre-election opinion polls have been criticised for weak methodology \citep{Mohammed2024OpinionPolls}, a reassessment of forecasts of the 2023 election found that conventional methods performed unevenly \citep{Murana2026RevisitingConventional}, and social-media signals have not proved a reliable substitute for polling \citep{Brito2021SystematicReview}. Public discussion therefore relies largely on expert judgement, whose forecasting accuracy is limited when it is not disciplined by explicit models and scoring \citep{Tetlock2006ExpertPolitical}.
+
+Nigeria adds a constitutional complication. Section 134 of the 1999 Constitution \citep{Constitution1999} requires a winning candidate to obtain both the largest number of votes nationally and at least one-quarter of the votes cast in at least two-thirds of all the states and the Federal Capital Territory (FCT); otherwise a second, and possibly a third, election follows. Whether a candidate clears this geographic spread is a state-level question, and its legal interpretation was litigated as recently as 2023 \citep{ObiINEC2023}. Yet there is no validated, public state-level dataset of Fourth Republic presidential results and no evaluated probabilistic state-level forecasting model for Nigeria. Related work has used past results to project partial returns in African elections \citep{Fridy2016ElectoralPredictions} and has used subnational data to forecast national elections when few elections are available, as in Brazil \citep{Bertholini2022AgainstAll}.
+
+This paper makes four contributions. First, we build and validate a state-level presidential results dataset for 1999--2023, reconciled to the Independent National Electoral Commission's (INEC) official national totals; 2007 is excluded because INEC never published a state breakdown. Second, we implement \S134 in code, including the two legally contested points (how the FCT counts, and how the fractional requirement of $24\tfrac{2}{3}$ units is met) and the second- and third-election procedure, with alternative readings as sensitivity checks. Third, we evaluate a family of Bayesian models of the incumbent party's state vote share with leave-future-out backtests, proper scoring rules \citep{Gneiting2007StrictlyProper, Matheson1976ScoringRules} and prequential stacking of predictive densities \citep{Yao2018UsingStacking}, guarding against overfitting with only five usable elections by freezing a written protocol before the final run. Fourth, we issue a pre-registered forecast of the 2027 election, publicly timestamped before election day, to be scored after the results are published \citep{Monogan2015ResearchPreregistration}.
+
+The results are mixed and, we argue, informative. When the true national vote is supplied (``oracle mode''), the stacked forecast clearly beats uniform swing on probabilistic accuracy, point accuracy and calibration. When the model must also forecast the national vote (``forecast mode''), the gain largely disappears: national swings are large and barely predictable from two to five earlier elections. A spatial autoregressive term does not help out of sample, whereas a simple North/South candidate-region covariate does. The probability that the incumbent party meets the \S134 spread was under-forecast in the backtests. We also disclose the model-development history, including a first specification that underperformed and a respecification made after seeing backtest results.
+
+\section{Background and Related Work}
+\label{sec:related_work}
+
+\subsection{State-level probabilistic election forecasting}
+Dynamic Bayesian models that combine fundamentals with state polls are well established in the United States \citep{Linzer2012DynamicBayesian, Heidemanns2020UpdatedDynamic, Chen2022PollsContext}, building on the observation that election outcomes are predictable from fundamentals long before polls settle \citep{Gelman1993WhyAmerican} and on multilevel regression and poststratification for state-level estimation \citep{Park2004BayesianMultilevel}. Bayesian approaches have been extended to multiparty systems \citep{Stoetzer2018ForecastingElections} and to subnational elections with little polling \citep{Stoetzer2025ElectionForecasting}. These models depend on polling whose total survey error is often larger than reported margins of error suggest \citep{Shiranimehr2018DisentanglingBias}. In settings with few elections and no reliable polls, simple models can be hard to beat \citep{Dawes1979RobustBeauty}, which motivates our emphasis on strong baselines.
+
+\subsection{Uniform swing and its probabilistic generalisation}
+Uniform swing projects the national change in a party's vote onto every subnational unit; its assumptions materially shape district-level projections \citep{Erfort2026HowSwing}. As a deterministic rule it provides no state-level uncertainty, so it cannot express the probability of a threshold event such as the \S134 spread. Reconciling unit-level predictions with a known or forecast aggregate by a common shift on the logit scale, the ``logit shift'', has a principled justification as an approximation to a posterior update \citep{Rosenman2021RecalibrationPredictive}; we use it to make state forecasts consistent with each national draw. We also include a probabilistic version of uniform swing among the candidate models, so that richer specifications are compared against a calibrated baseline.
+
+\subsection{Evaluating forecasts when elections are few}
+Proper scoring rules, in particular the continuous ranked probability score (CRPS), reward calibration and sharpness jointly \citep{Gneiting2007StrictlyProper, Matheson1976ScoringRules, Jordan2019EvaluatingProbabilistic}. However, presidential elections are rare and state results within an election are strongly correlated, so empirical evaluation of election forecasts has little statistical power \citep{Grimmer2024AssessingReliability}. With few elections, model selection on backtest results risks overfitting the evaluation itself. Stacking of predictive distributions \citep{Yao2018UsingStacking} combines models by optimising the predictive density of held-out outcomes; applying it prequentially, so that weights for each election use only earlier elections, keeps the combined forecast out of sample.
+
+\subsection{Spatial dependence and regional voting in Nigeria}
+African electoral competition is often organised around regional cleavages rooted in spatial inequality \citep{Boone2024InequalityPolitical, Boone2019RegionalInequalities}. In Nigeria, analyses of Fourth Republic presidential elections find that the homogeneity of voter choice moved from a random spatial pattern in 1999 to a clustered one afterwards, with a growing association with religion \citep{Nwankwo2019SpatialPattern}, and studies of 2023 report that ethno-religious, regional and party affiliations continue to shape presidential vote choice \citep{Abdulrazaq2024VotingPattern}. Spatial econometrics offers a framework for such dependence \citep{Lesage2009IntroductionSpatial}, but the weight matrix must usually be specified in advance, and estimating or parameterising it is an active research area \citep{Merk2021EstimationSpatial, Tan2024ParameterizingSpatial}. We test whether a spatial autoregressive term built on Nigeria's six geopolitical zones improves out-of-sample forecasts relative to explicit candidate-region covariates.
+
+\section{Data}
+\label{sec:data}
+
+\subsection{State-level presidential results, 1999--2023}
+We assembled presidential results for the 36 states and the FCT for 1999, 2003, 2011, 2015, 2019 and 2023 (Table~\ref{tab:election_results}). The 1999 results come from an IFES table of INEC data \citep{IFES1999}, the 2003 and 2011 results from archived INEC results websites \citep{INEC2003, INEC2011}, and the 2015 results from INEC's summary sheet \citep{INEC2015}. INEC published only national totals for 2019 and 2023, so state party votes for those years come from Stears \citep{Stears2023}, with registered voters from INEC's 2023 election report \citep{INEC2024Report}. The 1999 and 2015 sources are scanned documents and were read with optical character recognition; values were accepted only when arithmetic identities held (party votes summing to valid votes, and for 2015 valid plus rejected votes equalling votes cast). Four 1999 cells misread by OCR were corrected as the unique values satisfying those identities. No state-level breakdown of the 2007 presidential result was ever published, so 2007 is excluded.
+
+For every year, the state votes of the leading parties sum exactly to INEC's official national totals; for example, in 2023 the All Progressives Congress (APC) received 8,794,726 votes, the Peoples Democratic Party (PDP) 6,984,520, the Labour Party (LP) 6,101,533 and the New Nigeria Peoples Party (NNPP) 1,496,687. Two small discrepancies are internal to INEC's own files: in 2011 the state sum for the Action Congress of Nigeria is 11,850 votes below INEC's national figure, and one 2015 cell differs by one vote from the printed column total.
+
+\begin{table}[ht]
+\centering
+\caption{Curated state-level presidential results.}
+\label{tab:election_results}
+\begin{tabular}{lrrr}
+\toprule
+Year & Units & Parties & Total valid votes \\
+\midrule
+1999 & 37 & 2 & 29,848,441 \\
+2003 & 37 & 20 & 39,480,489 \\
+2011 & 37 & 20 & 38,199,219 \\
+2015 & 37 & 14 & 28,587,564 \\
+2019 & 37 & 3 & 27,324,583 \\
+2023 & 37 & 5 & 24,025,940 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Target}
+The target is the incumbent (ruling) party's share of valid votes in each state. The PDP is the incumbent party from 2003 to 2015 and the APC from 2019 to 2027. The 1999 election, which ended military rule, has no incumbent party and serves only as the lag for 2003; because 2007 is missing, 2011 is lagged against 2003. Table~\ref{tab:national} shows the national series. The incumbent party's national share ranged from 0.366 to 0.619, with swings of up to 19 points between consecutive elections.
+
+\begin{table}[ht]
+\centering
+\caption{Incumbent-party national share of valid votes.}
+\label{tab:national}
+\begin{tabular}{lllrrc}
+\toprule
+Election & Party & Lag & Share & Lagged share & President running \\
+\midrule
+2003 & PDP & 1999 & 0.619 & 0.628 & yes \\
+2011 & PDP & 2003 & 0.589 & 0.619 & yes \\
+2015 & PDP & 2011 & 0.450 & 0.589 & yes \\
+2019 & APC & 2015 & 0.556 & 0.540 & yes \\
+2023 & APC & 2019 & 0.366 & 0.556 & no \\
+2027 & APC & 2023 & -- & 0.366 & yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Covariates}
+All covariates are measured before election day.
+\begin{itemize}
+\item \textbf{Candidate home state and zone.} Indicators for whether a state is the home state, or in the home geopolitical zone, of the incumbent party's candidate, and whether it is in the home zone of a major challenger, for the current and the previous election.
+\item \textbf{North/South region.} Indicators for whether a state lies in the region (North: North-Central including the FCT, North-East, North-West; South: South-East, South-South, South-West) of the incumbent party's candidate and of the main challenger, current and lagged. The main challenger is the major opposition party listed first by its previous-election strength, which is known before the election.
+\item \textbf{Political violence.} Events and fatalities from ACLED \citep{Raleigh2010IntroducingAcled, ACLEDHDX} in the 12 full months before the election month, combined as $\log(1+\text{events})+\log(1+\text{fatalities})$ and standardised within each election year to remove ACLED's growing coverage over time.
+\end{itemize}
+State poverty estimates \citep{OPHIMPI} exist only from 2013 and so cannot enter models trained on earlier elections; they are excluded. National macroeconomic indicators do not vary across states and therefore cannot explain state deviations; with at most five national observations we do not use them in the national model.
+
+\section{Methodology}
+\label{sec:method}
+
+\subsection{The \S134 rule}
+Under \S134(2), a candidate is elected outright with the highest number of votes nationally and at least 25\% of the votes in each of at least two-thirds of all the states and the FCT \citep{Constitution1999}. Following the Supreme Court's 2023 decisions \citep{ObiINEC2023}, the FCT is treated as one of 37 units rather than a separate requirement, so two-thirds is $24\tfrac{2}{3}$ units. Following \textit{Awolowo v. Shagari} \citep{AwolowoShagari1979}, in which two-thirds of 19 states was held to be $12\tfrac{2}{3}$ states, the fraction is met by 25\% in 24 units plus at least two-thirds of 25\% (16.67\%) in a 25th. We report three alternative readings: two-thirds of the 36 states only (24 states); 24 states plus 25\% in the FCT (the petitioners' reading rejected in 2023); and 25 whole units. If no candidate is elected, \S134(3)--(5) require a second election within seven days between the national leader and the remaining candidate with a majority of votes in the highest number of states, which need not be the national runner-up, and, failing a winner with a majority and the same spread, a third election decided by simple majority.
+
+\subsection{Model}
+Let $y_{it}$ be the incumbent party's share in state $i$ at election $t$ and $N_t$ its national share. We decompose
+\begin{equation}
+\operatorname{logit} y_{it} = \operatorname{logit} N_t + d_{it},
+\end{equation}
+where $d_{it}$ is the state deviation. The national swing is modelled as
+\begin{equation}
+\operatorname{logit} N_t - \operatorname{logit} N_{t-1} = \mu + \gamma\, r_t + e_t, \qquad e_t \sim \mathcal{N}(0, \sigma_n^2),
+\end{equation}
+where $r_t$ indicates that the incumbent party's candidate is the sitting president, with priors $\mu, \gamma \sim \mathcal{N}(0, 0.5^2)$ and $\sigma_n \sim \text{HalfNormal}(0.5)$. State deviations follow either a level model,
+\begin{equation}
+(I - \rho W)\, d_t = \alpha + \phi\, d_{t-1} + X_t \beta + u + \varepsilon_t,
+\end{equation}
+or a swing model, which fixes $\phi = 1$ and applies the spatial filter to the change in deviations,
+\begin{equation}
+(I - \rho W)(d_t - d_{t-1}) = \alpha + X_t \beta + u + \varepsilon_t,
+\end{equation}
+and therefore nests probabilistic uniform swing. Here $W$ is a row-standardised zone-block matrix linking states in the same geopolitical zone, $u_i \sim \mathcal{N}(0, \tau^2)$ are state effects, and $\varepsilon_t \sim \mathcal{N}(0, \sigma^2 I)$. Priors are $\rho \sim \text{Uniform}(-1,1)$, $\beta \sim \mathcal{N}(0, 0.5^2)$, $\alpha \sim \mathcal{N}(0, 0.5^2)$, $\tau \sim \text{HalfNormal}(0.3)$ and $\sigma \sim \text{HalfNormal}(0.5)$. The likelihood is the exact spatial autoregressive likelihood, with the log-determinant computed from the eigenvalues of $W$.
+
+Predictions draw a national swing and a vector of state deviations from the posterior predictive distribution. Each draw's state logits are then shifted by a common constant so that the vote-weighted mean of the state shares equals the national draw, with weights given by each state's share of valid votes at the previous election (a logit shift; \citealp{Rosenman2021RecalibrationPredictive}). Point forecasts are posterior medians. Models are estimated in PyMC \citep{AbrilPla2023PyMC} with the No-U-Turn sampler \citep{Hoffman2011NouturnSampler}, four chains of 1,000 draws after 1,000 tuning steps, and a target acceptance rate of 0.99. In a parameter-recovery test on data simulated from the model, $\rho$, $\phi$ and $\beta$ were recovered within tolerance and 90\% predictive intervals covered at least 75\% of held-out values.
+
+\subsection{Candidate models and prequential stacking}
+The protocol fixes six candidate models: \texttt{ps\_null} (swing model with no covariates, a probabilistic uniform swing); \texttt{ps\_home} (swing model with home-state, home-zone and violence covariates); \texttt{ps\_region} (adds the North/South region covariates); \texttt{sar\_region} (\texttt{ps\_region} with the spatial term); \texttt{pp\_region} (level model with region covariates and a persistence prior $\phi \sim \mathcal{N}(1, 0.2^2)$ shrinking towards uniform swing); and \texttt{lvl\_home} (level model with $\phi \sim \mathcal{N}(0,1)$, kept as a reference). Two deterministic baselines are also scored: uniform swing, and persistence (last election's state shares unchanged).
+
+The headline forecast is a prequential stack. For each target election $t$, every candidate is fitted on elections before $t$, and the stacking weights for $t$ maximise $\sum_i \log \sum_k w_k\, p_k(y_i)$ over held-out state outcomes from backtests of targets before $t$ only \citep{Yao2018UsingStacking}. The 2015 stack therefore uses equal weights, the 2019 stack uses weights from the 2015 backtest, and the 2023 stack uses weights from the 2015 and 2019 backtests. Predictive densities are approximated by Gaussians on the logit scale and are evaluated in oracle mode, because the national component is common to all candidates and the weights should reflect state-level skill. The stacked predictive distribution is the weighted mixture of the candidates' draws.
+
+\subsection{Evaluation protocol and development history}
+Backtests train on elections before $t$ and predict $t \in \{2015, 2019, 2023\}$; the 2015 backtest has only two training elections (2003 and 2011). Every model is scored in forecast mode, using its own national forecast, and in oracle mode, using the true national share, which isolates state-level skill. The primary metric is the mean state-level CRPS in percentage points. We also report the root mean squared error (RMSE) and mean absolute error (MAE) of the posterior median, the coverage of 90\% intervals, the Brier score for the event that a state share is at least 25\%, the national error, and the probability that the \S134 spread is met.
+
+We disclose the development history in full. A first version (v1a) used level models only. Its persistence parameter was estimated at 0.13--0.29, identified from just two realigning transitions (1999 to 2003 and 2003 to 2011), and it underperformed uniform swing: mean oracle CRPS 10.61 and 10.66 for the non-spatial and spatial level models against 11.05 for uniform swing, but forecast-mode CRPS 13.07 and 13.06 against 10.96, with RMSE far above uniform swing in both modes. Swing models (v1b) were added \emph{after} seeing these results, so their backtest scores are not clean evidence for choosing them. We then wrote and froze an evaluation protocol (v2) that fixed the six candidates, a single new theory-motivated covariate family (North/South region), the stacking procedure and the metrics before the v2 run; its hash is recorded with every result file. One change was made after freezing: the first v2 run had 26 divergent transitions in the 2015 national fit, which has two observations, so the sampler's target acceptance rate was raised from 0.95 to 0.99. Both runs are archived and the results were essentially unchanged. The v2 run reproduces bit for bit with fixed seeds.
+
+\section{Evaluation Results}
+\label{sec:experiments}
+
+\subsection{State-level skill}
+Tables~\ref{tab:results_oracle} and~\ref{tab:results_forecast} report mean performance over the three backtests. In oracle mode the prequential stack has the lowest CRPS, 7.86 percentage points against 11.05 for uniform swing (29\% lower) and 8.77 for probabilistic uniform swing (10\% lower). Its median also has a lower RMSE than uniform swing (12.62 against 14.21), and its 90\% intervals cover 95\% of state outcomes. Uniform swing is deterministic given the national share and so covers none. Table~\ref{tab:per_year} shows that the stack's advantage comes from 2019 and 2023; in 2015, with two training elections, the stack is close to probabilistic uniform swing and slightly worse than uniform swing on RMSE (10.70 against 10.28).
+
+\begin{table}[ht]
+\centering
+\caption{Mean backtest performance over 2015, 2019 and 2023, \textbf{oracle mode} (true national share supplied). CRPS, RMSE and MAE in percentage points.}
+\label{tab:results_oracle}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Model & CRPS & RMSE & MAE & Cov. 90\% & Brier 25\% \\
+\midrule
+stack & 7.86 & 12.62 & 9.90 & 0.95 & 0.12 \\
+ps\_region & 8.29 & 15.06 & 11.39 & 0.99 & 0.13 \\
+pp\_region & 8.33 & 14.06 & 11.33 & 0.95 & 0.11 \\
+ps\_home & 8.71 & 15.48 & 11.88 & 0.99 & 0.14 \\
+ps\_null & 8.77 & 14.95 & 11.89 & 0.99 & 0.14 \\
+sar\_region & 8.88 & 15.34 & 11.68 & 1.00 & 0.14 \\
+lvl\_home & 10.67 & 19.18 & 14.70 & 0.90 & 0.13 \\
+uniform\_swing & 11.05 & 14.21 & 11.05 & 0.00 & 0.14 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Mean backtest performance over 2015, 2019 and 2023, \textbf{forecast mode} (each model's own national forecast).}
+\label{tab:results_forecast}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Model & CRPS & RMSE & MAE & Cov. 90\% & Brier 25\% \\
+\midrule
+ps\_region & 10.34 & 17.61 & 14.29 & 0.95 & 0.12 \\
+ps\_null & 10.39 & 16.64 & 13.36 & 0.99 & 0.13 \\
+stack & 10.66 & 17.90 & 15.01 & 0.96 & 0.13 \\
+ps\_home & 10.80 & 18.47 & 14.84 & 0.97 & 0.13 \\
+sar\_region & 10.90 & 18.40 & 15.05 & 0.98 & 0.13 \\
+uniform\_swing & 10.93 & 17.04 & 13.67 & 0.47 & 0.13 \\
+pp\_region & 11.10 & 19.40 & 15.84 & 0.95 & 0.13 \\
+lvl\_home & 13.09 & 23.98 & 19.15 & 0.91 & 0.14 \\
+persistence & -- & 17.94 & 14.75 & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{State CRPS and RMSE (percentage points) by backtest election.}
+\label{tab:per_year}
+\small
+\begin{tabular}{llrrrrrr}
+\toprule
+& & \multicolumn{3}{c}{CRPS} & \multicolumn{3}{c}{RMSE} \\
+Mode & Model & 2015 & 2019 & 2023 & 2015 & 2019 & 2023 \\
+\midrule
+oracle & stack & 6.83 & 7.36 & 9.39 & 10.70 & 10.88 & 16.27 \\
+oracle & uniform\_swing & 7.58 & 11.96 & 13.61 & 10.28 & 14.30 & 18.04 \\
+oracle & ps\_null & 6.87 & 9.46 & 9.98 & -- & -- & -- \\
+forecast & stack & 8.95 & 8.24 & 14.77 & 15.61 & 12.42 & 25.68 \\
+forecast & uniform\_swing & 10.55 & 8.59 & 13.67 & 15.74 & 13.53 & 21.87 \\
+forecast & ps\_null & 8.80 & 9.64 & 12.74 & -- & -- & -- \\
+forecast & persistence & -- & -- & -- & 16.94 & 13.99 & 22.88 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/fig1_backtest_crps.png}
+\caption{Leave-future-out backtests: mean state-level CRPS (percentage points, lower is better) of the incumbent-party vote share for 2015, 2019 and 2023, for the prequential stack, deterministic uniform swing and probabilistic uniform swing. Left: each model uses its own national forecast. Right: the true national share is supplied (oracle), isolating state-level skill.}
+\label{fig:backtest_crps}
+\end{figure}
+
+\subsection{The national component dominates}
+In forecast mode the advantage largely disappears (Table~\ref{tab:results_forecast}): the stack's CRPS is 10.66 against 10.93 for uniform swing, and its RMSE is higher (17.90 against 17.04). The national forecasts were 0.568, 0.483 and 0.537 against outcomes of 0.450, 0.556 and 0.366 in 2015, 2019 and 2023, errors of $+11.87$, $-7.27$ and $+17.05$ percentage points. Each outcome fell inside the 90\% national interval, but only because the intervals are wide. With two to five past swings, one of them (2023) the largest in the series, the national swing is barely predictable, and it dominates state-level error in forecast mode.
+
+\subsection{Spatial dependence, regional covariates and stacking weights}
+The spatial term did not improve out-of-sample forecasts. Although the estimated spatial parameter was substantial in every training window ($\rho$ between 0.62 and 0.64), \texttt{sar\_region} scored worse than the otherwise identical non-spatial \texttt{ps\_region} (oracle CRPS 8.88 against 8.29). It received zero weight in the 2019 and 2023 stacks and in the weights used for 2027; it received equal weight in 2015 only because no earlier backtest existed. The North/South region covariates improved on home-zone covariates alone (oracle CRPS 8.29 against 8.71; forecast mode 10.34 against 10.80). In the region models the main challenger's home-region coefficient was negative throughout, for example $-0.75$ (posterior s.d.\ 0.22) in \texttt{ps\_region} fitted for 2023. The incumbent candidate's region effect cannot be separated from its lag before 2023, because the incumbent party's candidate never switched region before then, so in the 2019 and 2023 backtests it is identified only by the prior.
+
+The stacking weights (Table~\ref{tab:weights}) moved from equal weights in 2015 to \texttt{pp\_region} (0.7) and \texttt{ps\_region} (0.3) in 2019, and to \texttt{pp\_region} alone in 2023. Even under a prior centred on uniform swing, the posterior persistence in \texttt{pp\_region} was 0.31, 0.41 and 0.49 in the three training windows, so the data favour substantial mean reversion of state deviations once candidate-region effects are accounted for.
+
+\begin{table}[ht]
+\centering
+\caption{Prequential stacking weights. Each column uses backtests of earlier targets only; the last column is used for 2027.}
+\label{tab:weights}
+\begin{tabular}{lrrrr}
+\toprule
+Model & 2015 & 2019 & 2023 & 2027 \\
+\midrule
+ps\_null & 0.167 & 0 & 0 & 0 \\
+ps\_home & 0.167 & 0 & 0 & 0 \\
+ps\_region & 0.167 & 0.3 & 0 & 0.188 \\
+sar\_region & 0.167 & 0 & 0 & 0 \\
+pp\_region & 0.167 & 0.7 & 1 & 0.812 \\
+lvl\_home & 0.167 & 0 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Calibration and the \S134 spread}
+Figure~\ref{fig:backtest_intervals} shows the stack's oracle-mode intervals against outcomes; coverage was 100\%, 100\% and 86\% in 2015, 2019 and 2023. The intervals are wide. The incumbent party met the \S134 spread in all three elections, but the stack's oracle-mode probability of this was 0.462 in 2015, 0.985 in 2019 and 0.379 in 2023, so the event was under-forecast in two of the three elections. Across all fits the maximum $\hat{R}$ was 1.019 (in the \texttt{lvl\_home} reference model, which receives zero weight), the minimum bulk effective sample size was 325, and there were no divergent transitions.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/fig2_backtest_intervals.png}
+\caption{Prequential stack, oracle mode: posterior median and 90\% interval of the incumbent-party share in each of the 37 units against the outcome, for 2015, 2019 and 2023 (coverage 100\%, 100\%, 86\%). Hollow orange markers are outcomes outside the interval. Dashed line: the 25\% \S134 threshold.}
+\label{fig:backtest_intervals}
+\end{figure}
+
+\section{The 2027 Pre-registered Forecast}
+\label{sec:forecast}
+
+\subsection{Design}
+We refitted the stack's two non-negligible members, \texttt{pp\_region} (weight 0.812) and \texttt{ps\_region} (0.188), on all five elections with state results and issued a forecast for the election of 27 February 2027. The forecast was committed to a public repository with cryptographic hashes of its inputs and outputs in November 2026. The target is the APC's share of valid votes; the incumbent president (Tinubu, South-West) is running. The model does \emph{not} forecast the outright winner or the probability of a second election: a national plurality depends on how the opposition vote splits, and the opposition line-up was not settled when the forecast was issued. We therefore report results separately for each geopolitical zone the main challenger could come from and attach no probabilities to these scenarios.
+
+\subsection{Results}
+Table~\ref{tab:2027_scenarios} reports the forecast. In every scenario the median APC national share is about 0.324 with a 90\% interval of roughly 0.19 to 0.51, the probability of a national majority is about 0.05, and the median number of units in which APC reaches 25\% is 19 or 20. Under the default legal reading the probability of meeting the \S134 spread ranges from 0.238 to 0.288 across scenarios; it is 0.212--0.271 if only the 36 states count, 0.189--0.234 if 25 whole units are required, and 0.066--0.156 under the petitioners' 2023 reading requiring 25\% in the FCT as well.
+
+\begin{table}[ht]
+\centering
+\caption{2027 pre-registered forecast by the main challenger's home zone: APC national share and probability of meeting the \S134 spread (default reading).}
+\label{tab:2027_scenarios}
+\small
+\begin{tabular}{lrcrr}
+\toprule
+Challenger zone & APC median & 90\% interval & P(APC $>$ 50\%) & P(spread) \\
+\midrule
+North-Central & 0.324 & [0.188, 0.508] & 0.055 & 0.246 \\
+North-East & 0.324 & [0.191, 0.506] & 0.053 & 0.249 \\
+North-West & 0.325 & [0.192, 0.504] & 0.053 & 0.288 \\
+South-East & 0.325 & [0.188, 0.507] & 0.054 & 0.264 \\
+South-South & 0.325 & [0.188, 0.508] & 0.054 & 0.238 \\
+South-West & 0.324 & [0.191, 0.508] & 0.054 & 0.281 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Because the national swing is the weakly predictable component, the forecast is most usefully read conditional on the national share (Figure~\ref{fig:2027_spread}). Averaged over scenarios, the median number of units with APC at 25\% or more rises from 18 at a 30\% national share to 24.3 at 40\% and 29.3 at 50\%. The probability of meeting the spread is at most 0.01 at 30\%, 0.13--0.25 at 35\%, 0.56--0.77 at 40\% and 0.88--0.98 at 45\%. For reference, APC won 36.6\% nationally in 2023 and met the spread; given the backtest under-forecasting, the conditional probabilities near that level are likely too low. Figure~\ref{fig:2027_states} shows state forecasts for a challenger from the North-East: APC's median share is highest in the South-West (for example Ondo 0.657 and Lagos 0.637) and lowest in the South-East (Anambra 0.068), with 90\% intervals that are wide throughout.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.75\linewidth]{figures/fig3_2027_spread_conditional.png}
+\caption{2027 pre-registered forecast: probability that APC obtains at least 25\% of the vote in $24\tfrac{2}{3}$ of the 37 units (\S134, default legal reading) as a function of APC's national vote share. Line: mean over the six main-challenger home-zone scenarios; band: range across scenarios. Dashed line: APC's 2023 national share (36.6\%).}
+\label{fig:2027_spread}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.6\linewidth]{figures/fig4_2027_states.png}
+\caption{2027 pre-registered forecast of APC's share of valid votes by state (posterior median and 90\% interval), scenario with the main challenger from the North-East. Dashed line: 25\% threshold.}
+\label{fig:2027_states}
+\end{figure}
+
+\subsection{Evaluation plan}
+After INEC publishes state results, the forecast will be scored under the scenario matching the actual main challenger, using the state CRPS relative to uniform swing and probabilistic uniform swing from the same 2023 baseline, the coverage of state 90\% intervals, the national error, and log and Brier scores for the \S134 spread and for each state's 25\% event, in both forecast and oracle mode.
+
+\section{Discussion and Limitations}
+\label{sec:discussion}
+The central lesson is a separation between what is and is not forecastable. Conditional on the national vote, a small Bayesian model with candidate-region covariates, combined prequentially, produces state forecasts that are better than uniform swing and well calibrated. The national vote itself is not forecastable with this information: two to five past swings, including a 19-point fall in 2023 when the incumbent president did not run, cannot pin down the next one. This matches the broader point that few elections give little power to evaluate, let alone train, election forecasts \citep{Grimmer2024AssessingReliability}. Improving the national component will require information outside the historical series, such as cross-national priors on incumbent-party swings or pre-election polls, whose problems in Nigeria are well documented \citep{Mohammed2024OpinionPolls, Murana2026RevisitingConventional}. Any such extension should itself be pre-registered.
+
+The negative spatial result is also informative. A zone-block spatial term produced large estimates of spatial dependence in sample but no out-of-sample gain, while explicit indicators of where the candidates come from did help. In Nigeria, much of what looks like spatial contagion appears to be regional alignment with candidates, which changes from one election to the next and is better encoded directly.
+
+There are important limitations. Only five elections with state results inform the model, and the 2015 backtest trains on two. Several elections in the series, most prominently 2007, were widely criticised by observers, and forensic analysis has suggested that vote counts in 2011 and 2015 do not conform to patterns expected under manipulation-free processes \citep{Tunmibi2021MonteCarlo}; our target is the declared result. The 2019 and 2023 state figures come from Stears rather than an INEC document, although they reconcile exactly to INEC's national party totals, and the 1999 and 2015 figures required optical character recognition. Candidate home states were coded from public candidate information. State-level intervals are wide, the \S134 spread event was under-forecast in two of three backtests, and the incumbent region effect is identified only by the 2019--2023 switch. Finally, the model does not forecast plurality against a fragmented opposition, which is likely to decide 2027.
+
+\section{Conclusion}
+\label{sec:conclusion}
+We built a validated state-level results dataset for Nigeria's Fourth Republic, implemented the \S134 rule with its contested legal readings, and evaluated Bayesian state-level forecasts under a protocol designed to prevent the overfitting that few elections invite. State-level structure is forecastable and the stacked model beats strong baselines when the national vote is known, but the national swing is not forecastable from the historical series alone and dominates forecast error. The pre-registered 2027 forecast, publicly timestamped before the election, will provide a genuinely out-of-sample test.
+
+\vspace{1em}
+\noindent\textbf{Data and code availability.} Code, the curated data, the frozen evaluation protocol and the pre-registered forecast are available in a public repository [repository URL withheld for review].
+
+\vspace{1em}
+\noindent\textbf{Declaration of competing interest.} The author declares no competing interests.
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{references}
+
+\end{document}

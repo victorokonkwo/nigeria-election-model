@@ -302,13 +302,13 @@ Median number of units with APC >= 25%, averaged over scenarios:
 
 |   national_share |   units_at_25pct_median |
 |-----------------:|------------------------:|
-|              0.3 |                    18   |
-|              0.4 |                    21.3 |
-|              0.4 |                    24.3 |
-|              0.4 |                    27.3 |
-|              0.5 |                    29.3 |
-|              0.6 |                    31.3 |
-|              0.6 |                    32.8 |
+|             0.3  |                    18   |
+|             0.35 |                    21.3 |
+|             0.4  |                    24.3 |
+|             0.45 |                    27.3 |
+|             0.5  |                    29.3 |
+|             0.55 |                    31.3 |
+|             0.6  |                    32.8 |
 
 For reference, APC's 2023 national share was 36.6% and APC met the spread in 2023.
 

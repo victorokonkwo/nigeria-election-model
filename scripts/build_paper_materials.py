@@ -304,7 +304,7 @@ opposition scenarios. Incumbent candidate (Tinubu, South-West) running.
 
 Median number of units with APC >= 25%, averaged over scenarios:
 
-{md(units, 1)}
+{units.assign(units_at_25pct_median=units.units_at_25pct_median.round(1)).to_markdown(index=False)}
 
 For reference, APC's 2023 national share was 36.6% and APC met the spread in 2023.
 
