@@ -70,3 +70,9 @@ Corrections to the first round:
 
 Second pre-registered forecast: `docs/evaluation_protocol_v3.md`, `scripts/forecast_2027_v3.py`,
 `outputs/preregistered/2027_v3/`. v2 remains primary.
+
+Zone-shock backtests: the results of record are the rerun from commit `e97e877`. An
+earlier run with identical code, made while other model fits were running, differed
+by up to 0.04 CRPS points in 2019 and 2023; 2015 and all national results were
+identical. `review2/` was regenerated from the rerun. Only the zone-shock rows
+changed.

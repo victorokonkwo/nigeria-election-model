@@ -49,3 +49,17 @@ head to head. The comparison uses:
 
 All comparisons are made in both forecast mode and oracle mode. Whichever
 forecast scores better, v2 remains the pre-registered primary forecast.
+
+## 5. Issue record
+- **Issued forecast:** the v3 forecast was issued from commit `e97e877` (issue
+  time in `outputs/preregistered/2027_v3/forecast.json`). A rerun from that
+  commit reproduces its `states.csv` and `conditional.csv` byte for byte; see
+  `outputs/exploratory/reproduction_check.json`.
+- **Earlier draft run:** a local run before that commit (never published)
+  differed slightly:
+  - up to 1.5 points in state medians and up to 0.005 in scenario spread
+    probabilities;
+  - the sampler chains also differed;
+  - the cause was not identified, and other model fits were running at the
+    same time.
+- The forecast of record is the one issued from `e97e877`.

@@ -1,0 +1,153 @@
+{
+  "target": "APC (incumbent party) share of valid votes, 2027 presidential election",
+  "variant": "v3: v2 stack members with a shared zone shock (docs/evaluation_protocol_v3.md); secondary to the v2 forecast in outputs/preregistered/2027",
+  "election_date": "2027-02-27",
+  "issued_at": "2026-11-23T20:34:00.768437+00:00",
+  "stack_weights": {
+    "ps_region": 0.18803521552947441,
+    "pp_region": 0.8119647844705256
+  },
+  "diagnostics": {
+    "ps_region": {
+      "national": {
+        "max_rhat": 1.0115189168965093,
+        "min_ess_bulk": 1023.3669775416325,
+        "divergences": 0
+      },
+      "state": {
+        "max_rhat": 1.004260456090532,
+        "min_ess_bulk": 1409.8181371619528,
+        "divergences": 0
+      }
+    },
+    "pp_region": {
+      "national": {
+        "max_rhat": 1.0115189168965093,
+        "min_ess_bulk": 1023.3669775416325,
+        "divergences": 0
+      },
+      "state": {
+        "max_rhat": 1.005418965083759,
+        "min_ess_bulk": 1699.1166390377853,
+        "divergences": 0
+      }
+    }
+  },
+  "scenarios_by_main_challenger_zone": {
+    "North-Central": {
+      "national_share": {
+        "median": 0.32428721602356336,
+        "q05": 0.18809690205488758,
+        "q95": 0.5078666028808109
+      },
+      "p_national_majority": 0.054875,
+      "units_at_25pct": {
+        "median": 20.0,
+        "q05": 10.0,
+        "q95": 30.0
+      },
+      "p_spread_met": {
+        "default (FCT as 37th unit; Awolowo v Shagari)": 0.270125,
+        "states only (24 of 36)": 0.260125,
+        "24 states + 25% in FCT": 0.0785,
+        "25 whole units (ceil)": 0.22
+      }
+    },
+    "North-East": {
+      "national_share": {
+        "median": 0.3236858344786957,
+        "q05": 0.1911268027490381,
+        "q95": 0.5058732288275476
+      },
+      "p_national_majority": 0.053125,
+      "units_at_25pct": {
+        "median": 20.0,
+        "q05": 10.0,
+        "q95": 31.0
+      },
+      "p_spread_met": {
+        "default (FCT as 37th unit; Awolowo v Shagari)": 0.27025,
+        "states only (24 of 36)": 0.25275,
+        "24 states + 25% in FCT": 0.113375,
+        "25 whole units (ceil)": 0.224125
+      }
+    },
+    "North-West": {
+      "national_share": {
+        "median": 0.32451386791703074,
+        "q05": 0.1920211875793549,
+        "q95": 0.5041007104926427
+      },
+      "p_national_majority": 0.05275,
+      "units_at_25pct": {
+        "median": 20.0,
+        "q05": 10.0,
+        "q95": 31.0
+      },
+      "p_spread_met": {
+        "default (FCT as 37th unit; Awolowo v Shagari)": 0.311,
+        "states only (24 of 36)": 0.294,
+        "24 states + 25% in FCT": 0.133,
+        "25 whole units (ceil)": 0.258125
+      }
+    },
+    "South-East": {
+      "national_share": {
+        "median": 0.3252990210632328,
+        "q05": 0.1883339064864123,
+        "q95": 0.5072175864222088
+      },
+      "p_national_majority": 0.053625,
+      "units_at_25pct": {
+        "median": 20.0,
+        "q05": 9.0,
+        "q95": 30.0
+      },
+      "p_spread_met": {
+        "default (FCT as 37th unit; Awolowo v Shagari)": 0.27725,
+        "states only (24 of 36)": 0.253875,
+        "24 states + 25% in FCT": 0.14375,
+        "25 whole units (ceil)": 0.22475
+      }
+    },
+    "South-South": {
+      "national_share": {
+        "median": 0.3251340970916674,
+        "q05": 0.18812777116504278,
+        "q95": 0.5075318104826689
+      },
+      "p_national_majority": 0.05425,
+      "units_at_25pct": {
+        "median": 20.0,
+        "q05": 9.0,
+        "q95": 30.0
+      },
+      "p_spread_met": {
+        "default (FCT as 37th unit; Awolowo v Shagari)": 0.25725,
+        "states only (24 of 36)": 0.232375,
+        "24 states + 25% in FCT": 0.13725,
+        "25 whole units (ceil)": 0.206375
+      }
+    },
+    "South-West": {
+      "national_share": {
+        "median": 0.32402914725823,
+        "q05": 0.19110509392268304,
+        "q95": 0.5076043306199535
+      },
+      "p_national_majority": 0.054375,
+      "units_at_25pct": {
+        "median": 20.0,
+        "q05": 9.0,
+        "q95": 31.0
+      },
+      "p_spread_met": {
+        "default (FCT as 37th unit; Awolowo v Shagari)": 0.294125,
+        "states only (24 of 36)": 0.275,
+        "24 states + 25% in FCT": 0.156,
+        "25 whole units (ceil)": 0.24625
+      }
+    }
+  },
+  "not_modelled": "national plurality vs a split opposition; scenario probabilities"
+}

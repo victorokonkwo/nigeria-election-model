@@ -20,9 +20,9 @@ oracle,pus,2019,-2.078,-4.177,-0.34,
 oracle,pus,2023,-0.788,-3.7,2.291,
 oracle,pus,mean,-1.273,-2.513,-0.008,3.0
 oracle,pp_region_zs,2015,-0.289,-0.76,0.112,
-oracle,pp_region_zs,2019,0.387,-0.074,0.888,
-oracle,pp_region_zs,2023,1.251,-0.02,3.248,
-oracle,pp_region_zs,mean,0.45,-0.075,1.089,1.0
+oracle,pp_region_zs,2019,0.425,-0.037,0.916,
+oracle,pp_region_zs,2023,1.289,0.034,3.271,
+oracle,pp_region_zs,mean,0.475,-0.052,1.115,1.0
 forecast,ps_null,2015,0.156,-1.402,2.152,
 forecast,ps_null,2019,-1.399,-3.889,1.209,
 forecast,ps_null,2023,2.029,-1.839,6.185,
@@ -44,6 +44,6 @@ forecast,pus,2019,-1.345,-4.205,1.268,
 forecast,pus,2023,2.296,-1.912,6.611,
 forecast,pus,mean,0.175,-1.602,1.938,2.0
 forecast,pp_region_zs,2015,-0.456,-2.49,0.907,
-forecast,pp_region_zs,2019,0.436,-0.042,1.113,
-forecast,pp_region_zs,2023,2.157,1.131,3.48,
-forecast,pp_region_zs,mean,0.712,-0.049,1.378,1.0
+forecast,pp_region_zs,2019,0.461,-0.013,1.113,
+forecast,pp_region_zs,2023,2.171,1.157,3.479,
+forecast,pp_region_zs,mean,0.725,-0.033,1.388,1.0
