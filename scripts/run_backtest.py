@@ -27,9 +27,17 @@ from loguru import logger
 from scipy.special import expit
 
 from ngforecast.calibration.scores import brier_score, crps_sample
-from ngforecast.data.geography import build_zone_block_matrix, load_constitution_units, row_standardize
+from ngforecast.data.geography import (
+    build_zone_block_matrix,
+    load_constitution_units,
+    row_standardize,
+)
 from ngforecast.features.panel import logit
-from ngforecast.models.ensemble.stacking import gaussian_logit_logdens, mixture_draws, stack_densities
+from ngforecast.models.ensemble.stacking import (
+    gaussian_logit_logdens,
+    mixture_draws,
+    stack_densities,
+)
 from ngforecast.models.fundamentals.bayes import SamplerConfig, fit, predict
 from ngforecast.simulation.constitution import meets_spread
 
@@ -144,7 +152,9 @@ def main() -> None:
         # Prequential stacking weights: only targets < t
         past = [s for s in TARGETS if s < t]
         if past:
-            ld = np.vstack([np.column_stack([holdout_logdens[s][n] for n in CANDIDATES]) for s in past])
+            ld = np.vstack(
+                [np.column_stack([holdout_logdens[s][n] for n in CANDIDATES]) for s in past]
+            )
             weights = stack_densities(ld, list(CANDIDATES))
         else:
             weights = {n: 1 / len(CANDIDATES) for n in CANDIDATES}
@@ -152,9 +162,14 @@ def main() -> None:
 
         for mode in ("forecast", "oracle"):
             override = nat_true if mode == "oracle" else None
-            runs = {n: predict(m, test, W, seed=t, national_override=override) for n, m in fitted.items()}
+            runs = {
+                n: predict(m, test, W, seed=t, national_override=override)
+                for n, m in fitted.items()
+            }
             if mode == "oracle":
-                holdout_logdens[t] = {n: gaussian_logit_logdens(r["state"], y) for n, r in runs.items()}
+                holdout_logdens[t] = {
+                    n: gaussian_logit_logdens(r["state"], y) for n, r in runs.items()
+                }
 
             joint = {n: np.column_stack([r["state"], r["national"]]) for n, r in runs.items()}
             mix = mixture_draws(joint, weights, n_draws=4 * args.draws, rng=rng)
@@ -164,7 +179,12 @@ def main() -> None:
 
             for name, r in runs.items():
                 metrics.append(
-                    {"year": t, "model": name, "national": mode, **score(r["state"], r["national"], test, const, fct_index)}
+                    {
+                        "year": t,
+                        "model": name,
+                        "national": mode,
+                        **score(r["state"], r["national"], test, const, fct_index),
+                    }
                 )
                 q = np.percentile(r["state"], [5, 50, 95], axis=0)
                 preds.append(
@@ -196,6 +216,19 @@ def main() -> None:
             }
         )
 
+    # Weights for the next (2027) forecast: stacking on all backtests (protocol §4)
+    ld_all = np.vstack(
+        [np.column_stack([holdout_logdens[s][n] for n in CANDIDATES]) for s in TARGETS]
+    )
+    weights_log["next"] = {
+        "fitted_on_targets": TARGETS,
+        "weights": stack_densities(ld_all, list(CANDIDATES)),
+    }
+    np.savez(
+        out / "holdout_logdens.npz",
+        **{f"{t}_{n}": holdout_logdens[t][n] for t in TARGETS for n in CANDIDATES},
+    )
+
     m = pd.DataFrame(metrics)
     m.to_csv(out / "metrics.csv", index=False)
     pd.concat(preds).to_parquet(out / "predictions.parquet", index=False)
@@ -206,7 +239,9 @@ def main() -> None:
             {
                 "protocol": str(PROTOCOL),
                 "protocol_sha256": protocol_sha,
-                "candidates": {k: {**v, "phi_prior": v.get("phi_prior")} for k, v in CANDIDATES.items()},
+                "candidates": {
+                    k: {**v, "phi_prior": v.get("phi_prior")} for k, v in CANDIDATES.items()
+                },
                 "draws": args.draws,
                 "chains": cfg.chains,
                 "targets": TARGETS,
@@ -219,8 +254,20 @@ def main() -> None:
     with pd.option_context("display.width", 200):
         for mode in ("forecast", "oracle"):
             print(f"\n== {mode} (mean over {TARGETS})")
-            print(m[m.national == mode].groupby("model")[cols].mean().round(2).sort_values("state_crps_pp").to_string())
-    print("\nweights:", json.dumps({t: {k: round(v, 3) for k, v in w["weights"].items()} for t, w in weights_log.items()}))
+            print(
+                m[m.national == mode]
+                .groupby("model")[cols]
+                .mean()
+                .round(2)
+                .sort_values("state_crps_pp")
+                .to_string()
+            )
+    print(
+        "\nweights:",
+        json.dumps(
+            {t: {k: round(v, 3) for k, v in w["weights"].items()} for t, w in weights_log.items()}
+        ),
+    )
     logger.info("Backtest written to {}", out)
 
 
