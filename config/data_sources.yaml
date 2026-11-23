@@ -11,34 +11,35 @@ inec:
   format: csv
   auth: api_key  # from .env → INEC_API_KEY
 
-nbs:
-  description: "National Bureau of Statistics — poverty, unemployment, CPI by state"
-  base_url: "https://nigerianstat.gov.ng/api"
-  endpoints:
-    poverty: /data/poverty
-    unemployment: /data/unemployment
-    cpi: /data/cpi
-  vintage: "2024-Q3"
+poverty:
+  description: >-
+    State-level Multidimensional Poverty Index (OPHI), computed from NBS/UNICEF
+    MICS and NPC/DHS household surveys. Surveys: DHS 2013, MICS 2016-17,
+    DHS 2018, MICS 2021. Covers 36 states + FCT. No state data before 2013.
+  hdx_dataset: nigeria-mpi
+  files:
+    mpi_trends: nga_mpi_trends.csv
+  citation: "Oxford Poverty and Human Development Initiative (OPHI), Global MPI, via HDX"
   format: csv
 
-cbn:
-  description: "Central Bank of Nigeria — inflation, exchange rate, money supply"
-  base_url: "https://www.cbn.gov.ng/api/v2"
-  endpoints:
-    inflation: /statistics/inflation
-    exchange_rate: /statistics/exchange-rate
-  vintage: "2024-Q4"
-  format: json
-
-oil:
-  description: "Oil price & production (Brent, OPEC reference basket)"
-  sources:
-    - name: eia
-      url: "https://api.eia.gov/v2/petroleum/pri/spt/data/"
-    - name: opec
-      url: "https://data.opec.org/api"
-  vintage: "2025-Q2"
-  format: json
+macro:
+  description: >-
+    National annual macro indicators. World Bank WDI (CPI inflation from NBS
+    via IMF IFS; official exchange rate from CBN; GDP per capita growth) and
+    Brent crude spot price (EIA via FRED). Keyless.
+  world_bank:
+    base_url: "https://api.worldbank.org/v2/country/NGA/indicator"
+    indicators:
+      inflation_cpi: FP.CPI.TOTL.ZG      # annual %, consumer prices
+      fx_official: PA.NUS.FCRF           # NGN per USD, period average (CBN)
+      gdp_pc_growth: NY.GDP.PCAP.KD.ZG   # annual %, constant prices
+    # SL.UEM.TOTL.ZS (ILO modelled unemployment, ~3-5%) is deliberately excluded:
+    # it is not comparable with NBS labour-force estimates.
+  fred:
+    url: "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILBRENTEU"
+    series: DCOILBRENTEU               # Brent spot, USD/bbl, daily
+  citation: "World Bank, World Development Indicators; U.S. EIA via FRED (DCOILBRENTEU)"
+  format: json+csv
 
 polls:
   description: "Pre-election polls (NOI Polls, Afrobarometer, ad hoc)"
@@ -52,11 +53,14 @@ polls:
   vintage: rolling
 
 acled:
-  description: "Armed Conflict Location & Event Data — political violence index"
-  base_url: "https://api.acleddata.com/acled/read"
-  params:
-    iso: 566  # Nigeria
-    event_type: "Political violence"
-  auth: acled_key  # ACLED_ACCESS_KEY + ACLED_EMAIL from .env
-  vintage: rolling
-  format: json
+  description: >-
+    ACLED political violence events and fatalities, aggregated by ACLED to
+    admin2 x month (1997-), published keyless on HDX. Raw rows require a
+    myACLED account and are not needed here. ACLED Terms of Use forbid
+    redistributing the data: keep it out of git and publish only derived
+    indices, with attribution.
+  hdx_dataset: nigeria-acled-conflict-data
+  resource_match: political_violence_events_and_fatalities
+  window_months: 12        # violence index = 12 months before election month
+  citation: "Armed Conflict Location & Event Data (ACLED), www.acleddata.com, via HDX"
+  format: xlsx

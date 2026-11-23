@@ -17,6 +17,31 @@ def load_constitution_units() -> list[dict]:
     return cfg["units"]
 
 
+_NAME_ALIASES = {
+    "fct": "FC",
+    "federal capital territory": "FC",
+    "fct abuja": "FC",
+    "abuja": "FC",
+    "nassarawa": "NA",
+}
+
+
+def state_code(name: str) -> str:
+    """Map a state name as spelled by INEC/ACLED/OPHI etc. to its two-letter code.
+
+    Case-, whitespace- and hyphen-insensitive; handles FCT and Nasarawa variants.
+    Raises KeyError for an unknown name so bad joins fail loudly.
+    """
+    key = " ".join(str(name).replace("-", " ").replace("_", " ").split()).lower()
+    key = key.removesuffix(" state")
+    if key in _NAME_ALIASES:
+        return _NAME_ALIASES[key]
+    for unit in load_constitution_units():
+        if unit["name"].lower() == key or unit["code"].lower() == key:
+            return unit["code"]
+    raise KeyError(f"Unknown Nigerian state name: {name!r}")
+
+
 def build_zone_map() -> dict[str, str]:
     """Return {state_code: zone} mapping."""
     units = load_constitution_units()

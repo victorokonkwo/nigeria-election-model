@@ -1,0 +1,262 @@
+2026-11-23 04:11:30.464 -05:00 | INFO     | __main__:main:120 - Protocol docs/evaluation_protocol.md sha256=dcdae4631dbd
+2026-11-23 04:11:30.599 -05:00 | INFO     | ngforecast.data.geography:build_zone_block_matrix:86 - Built zone-block W: 37 units
+2026-11-23 04:11:30.608 -05:00 | INFO     | __main__:main:139 - Backtest 2015: train [np.int64(2003), np.int64(2011)]
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+There were 26 divergences after tuning. Increase `target_accept` or reparameterize.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+2026-11-23 04:11:37.154 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011)]: rho=0.00, phi=1.00, max r_hat=1.012
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+There were 26 divergences after tuning. Increase `target_accept` or reparameterize.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+2026-11-23 04:11:41.408 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011)]: rho=0.00, phi=1.00, max r_hat=1.012
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+There were 26 divergences after tuning. Increase `target_accept` or reparameterize.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+2026-11-23 04:11:46.388 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011)]: rho=0.00, phi=1.00, max r_hat=1.012
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+There were 26 divergences after tuning. Increase `target_accept` or reparameterize.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [rho, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+2026-11-23 04:11:52.400 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011)]: rho=0.62, phi=1.00, max r_hat=1.013
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+There were 26 divergences after tuning. Increase `target_accept` or reparameterize.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [phi, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+2026-11-23 04:11:59.497 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011)]: rho=0.00, phi=0.31, max r_hat=1.012
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+There were 26 divergences after tuning. Increase `target_accept` or reparameterize.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [phi, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+There was 1 divergence after tuning. Increase `target_accept` or reparameterize.
+2026-11-23 04:12:06.858 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011)]: rho=0.00, phi=0.23, max r_hat=1.012
+2026-11-23 04:12:07.361 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.096736
+2026-11-23 04:12:07.408 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.117334
+2026-11-23 04:12:07.456 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.103363
+2026-11-23 04:12:07.504 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.120230
+2026-11-23 04:12:07.552 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.126828
+2026-11-23 04:12:07.600 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.147048
+2026-11-23 04:12:07.648 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.113728
+2026-11-23 04:12:07.692 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.123955
+2026-11-23 04:12:08.182 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.101643
+2026-11-23 04:12:08.230 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.122606
+2026-11-23 04:12:08.276 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.105297
+2026-11-23 04:12:08.323 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.116871
+2026-11-23 04:12:08.370 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.096322
+2026-11-23 04:12:08.417 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.114263
+2026-11-23 04:12:08.463 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.102157
+2026-11-23 04:12:08.501 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.081081
+2026-11-23 04:12:08.504 -05:00 | INFO     | __main__:main:139 - Backtest 2019: train [np.int64(2003), np.int64(2011), np.int64(2015)]
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+2026-11-23 04:12:12.113 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015)]: rho=0.00, phi=1.00, max r_hat=1.005
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+2026-11-23 04:12:17.946 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015)]: rho=0.00, phi=1.00, max r_hat=1.003
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+2026-11-23 04:12:25.663 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015)]: rho=0.00, phi=1.00, max r_hat=1.004
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [rho, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+2026-11-23 04:12:32.772 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015)]: rho=0.64, phi=1.00, max r_hat=1.005
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [phi, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 4 seconds.
+2026-11-23 04:12:40.095 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015)]: rho=0.00, phi=0.41, max r_hat=1.008
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [phi, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+There were 45 divergences after tuning. Increase `target_accept` or reparameterize.
+The rhat statistic is larger than 1.01 for some parameters. This indicates problems during sampling. See https://arxiv.org/abs/1903.08008 for details
+The effective sample size per chain is smaller than 100 for some parameters.  A higher number is needed for reliable rhat and ess computation. See https://arxiv.org/abs/1903.08008 for details
+2026-11-23 04:12:45.712 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015)]: rho=0.00, phi=0.24, max r_hat=1.012
+2026-11-23 04:12:45.735 -05:00 | INFO     | ngforecast.models.ensemble.stacking:stack_densities:108 - Stacking weights: {'ps_null': 0.0, 'ps_home': 0.0, 'ps_region': 0.349, 'sar_region': 0.0, 'pp_region': 0.651, 'lvl_home': 0.0}
+2026-11-23 04:12:46.240 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.178705
+2026-11-23 04:12:46.286 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.186930
+2026-11-23 04:12:46.332 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.161927
+2026-11-23 04:12:46.378 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.153845
+2026-11-23 04:12:46.425 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.109840
+2026-11-23 04:12:46.471 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.156940
+2026-11-23 04:12:46.518 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.124220
+2026-11-23 04:12:46.562 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.184710
+2026-11-23 04:12:47.076 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.141338
+2026-11-23 04:12:47.123 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.140829
+2026-11-23 04:12:47.170 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.117966
+2026-11-23 04:12:47.216 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.111271
+2026-11-23 04:12:47.262 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.069365
+2026-11-23 04:12:47.310 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.112940
+2026-11-23 04:12:47.357 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.081316
+2026-11-23 04:12:47.395 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.189189
+2026-11-23 04:12:47.398 -05:00 | INFO     | __main__:main:139 - Backtest 2023: train [np.int64(2003), np.int64(2011), np.int64(2015), np.int64(2019)]
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+2026-11-23 04:12:51.407 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015), np.int64(2019)]: rho=0.00, phi=1.00, max r_hat=1.007
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+2026-11-23 04:12:56.530 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015), np.int64(2019)]: rho=0.00, phi=1.00, max r_hat=1.003
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+2026-11-23 04:13:03.254 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015), np.int64(2019)]: rho=0.00, phi=1.00, max r_hat=1.004
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [rho, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+2026-11-23 04:13:10.276 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015), np.int64(2019)]: rho=0.62, phi=1.00, max r_hat=1.005
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 2 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [phi, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 4 seconds.
+2026-11-23 04:13:18.162 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015), np.int64(2019)]: rho=0.00, phi=0.49, max r_hat=1.005
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [mu, gamma, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 1 seconds.
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [phi, beta, alpha, tau, u_raw, sigma]
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 3 seconds.
+2026-11-23 04:13:24.176 -05:00 | INFO     | ngforecast.models.fundamentals.bayes:fit:169 - Fitted on [np.int64(2003), np.int64(2011), np.int64(2015), np.int64(2019)]: rho=0.00, phi=0.52, max r_hat=1.005
+2026-11-23 04:13:24.195 -05:00 | INFO     | ngforecast.models.ensemble.stacking:stack_densities:108 - Stacking weights: {'ps_null': 0.0, 'ps_home': 0.0, 'ps_region': 0.0, 'sar_region': 0.0, 'pp_region': 1.0, 'lvl_home': 0.0}
+2026-11-23 04:13:24.707 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.108873
+2026-11-23 04:13:24.754 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.096143
+2026-11-23 04:13:24.800 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.096652
+2026-11-23 04:13:24.846 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.106759
+2026-11-23 04:13:24.891 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.144420
+2026-11-23 04:13:24.938 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.123735
+2026-11-23 04:13:24.985 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.142823
+2026-11-23 04:13:25.029 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.090589
+2026-11-23 04:13:25.541 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.179049
+2026-11-23 04:13:25.592 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.161131
+2026-11-23 04:13:25.637 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.159646
+2026-11-23 04:13:25.682 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.175598
+2026-11-23 04:13:25.731 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.178631
+2026-11-23 04:13:25.777 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.161694
+2026-11-23 04:13:25.823 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.179263
+2026-11-23 04:13:25.860 -05:00 | INFO     | ngforecast.calibration.scores:brier_score:12 - Brier score: 0.135135
+2026-11-23 04:13:25.918 -05:00 | INFO     | __main__:main:224 - Backtest written to outputs/backtest/v2
+
+== forecast (mean over [2015, 2019, 2023])
+               state_rmse_pp  state_crps_pp  state_cov90  brier_25pct
+model                                                                
+ps_region              17.68          10.38         0.95         0.12
+ps_null                16.71          10.42         0.98         0.13
+stack                  17.86          10.60         0.96         0.13
+ps_home                18.58          10.83         0.97         0.13
+sar_region             18.54          10.95         0.98         0.13
+uniform_swing          17.07          10.96         0.47         0.13
+pp_region              19.51          11.12         0.95         0.13
+lvl_home               24.00          13.07         0.91         0.14
+persistence            17.94            NaN          NaN          NaN
+
+== oracle (mean over [2015, 2019, 2023])
+               state_rmse_pp  state_crps_pp  state_cov90  brier_25pct
+model                                                                
+stack                  12.65           7.87         0.96         0.12
+ps_region              15.06           8.30         0.99         0.13
+pp_region              14.09           8.33         0.96         0.11
+ps_home                15.53           8.71         0.99         0.14
+ps_null                14.97           8.78         0.99         0.14
+sar_region             15.22           8.86         1.00         0.13
+lvl_home               19.08          10.61         0.91         0.13
+uniform_swing          14.21          11.05         0.00         0.14
+
+weights: {"2015": {"ps_null": 0.167, "ps_home": 0.167, "ps_region": 0.167, "sar_region": 0.167, "pp_region": 0.167, "lvl_home": 0.167}, "2019": {"ps_null": 0.0, "ps_home": 0.0, "ps_region": 0.349, "sar_region": 0.0, "pp_region": 0.651, "lvl_home": 0.0}, "2023": {"ps_null": 0.0, "ps_home": 0.0, "ps_region": 0.0, "sar_region": 0.0, "pp_region": 1.0, "lvl_home": 0.0}}

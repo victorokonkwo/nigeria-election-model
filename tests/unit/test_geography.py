@@ -10,6 +10,7 @@ from ngforecast.data.geography import (
     build_zone_map,
     load_constitution_units,
     row_standardize,
+    state_code,
 )
 
 
@@ -72,3 +73,31 @@ class TestRowStandardize:
         Ws = row_standardize(W)
         assert Ws[0].sum() == 0.0  # isolate stays zero
         assert Ws[1].sum() == pytest.approx(1.0)
+
+
+class TestStateCodes:
+    def test_codes_are_strings(self):
+        """YAML parses bare ON/NO/YES as booleans; every code must stay a string."""
+        for u in load_constitution_units():
+            assert isinstance(u["code"], str) and len(u["code"]) == 2, u
+
+    @pytest.mark.parametrize(
+        "name,code",
+        [
+            ("Ondo", "ON"),
+            ("FCT", "FC"),
+            ("Federal Capital Territory", "FC"),
+            ("FCT Abuja", "FC"),
+            ("Nassarawa", "NA"),
+            ("Nasarawa", "NA"),
+            ("AKWA IBOM", "AK"),
+            ("Cross-River", "CR"),
+            ("Lagos State", "LA"),
+        ],
+    )
+    def test_name_variants(self, name, code):
+        assert state_code(name) == code
+
+    def test_unknown_name_raises(self):
+        with pytest.raises(KeyError):
+            state_code("Atlantis")

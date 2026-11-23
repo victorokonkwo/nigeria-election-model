@@ -33,6 +33,18 @@ training_elections:
   - 2019
   - 2023
 
+# ── Election dates (presidential) ───────────
+# Covariates are measured strictly before these dates (no look-ahead).
+election_dates:
+  1999: "1999-02-27"
+  2003: "2003-04-19"
+  2007: "2007-04-21"
+  2011: "2011-04-16"
+  2015: "2015-03-28"
+  2019: "2019-02-23"
+  2023: "2023-02-25"
+  2027: "2027-02-27"
+
 # ── Logging ──────────────────────────────────
 log_level: INFO
 log_file: logs/ngforecast.log

@@ -1,0 +1,18 @@
+{
+  "covariates": [
+    "home_state",
+    "home_zone",
+    "opp_home_zone",
+    "home_state_lag",
+    "home_zone_lag",
+    "opp_home_zone_lag",
+    "violence_z"
+  ],
+  "exclude_train": [],
+  "draws": 1000,
+  "targets": [
+    2015,
+    2019,
+    2023
+  ]
+}

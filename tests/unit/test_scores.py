@@ -43,3 +43,12 @@ class TestCoverage:
         upper = np.array([0.7, 0.7])
         actual = np.array([0.1, 0.1])
         assert coverage(lower, upper, actual) == pytest.approx(0.0)
+
+
+def test_crps_sample_matches_closed_form_normal():
+    """CRPS of N(0,1) at y=0 is (sqrt(2) - 1)/sqrt(pi) ≈ 0.2337."""
+    from ngforecast.calibration.scores import crps_sample
+
+    rng = np.random.default_rng(0)
+    draws = rng.normal(0, 1, size=(200_000, 1))
+    assert crps_sample(draws, np.array([0.0])) == pytest.approx(0.2337, abs=0.003)

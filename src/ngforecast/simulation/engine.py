@@ -8,7 +8,7 @@ import numpy as np
 import yaml
 from loguru import logger
 
-from ngforecast.simulation.constitution import check_win_rule
+from ngforecast.simulation.constitution import check_win_rule, resolve_fct_index
 from ngforecast.simulation.errors import draw_correlated_errors
 from ngforecast.simulation.runoff import simulate_runoff
 
@@ -53,8 +53,11 @@ def run_simulations(
         rng=rng,
     )
 
+    fct_index = resolve_fct_index(const, n_states)
+
     wins = {c: 0 for c in candidates}
     runoff_count = 0
+    third_election_count = 0
     state_shares_sum = np.zeros((n_states, n_cand))
 
     for s in range(n_sims):
@@ -76,20 +79,24 @@ def run_simulations(
             national_votes=national_votes,
             candidates=candidates,
             constitution=const,
+            fct_index=fct_index,
         )
 
         if winner is not None:
             wins[winner] += 1
         else:
             runoff_count += 1
-            # Simulate runoff between top 2
-            runoff_winner = simulate_runoff(
+            # §134(3)–(5): second (and possibly third) election
+            runoff = simulate_runoff(
                 votes_by_state=votes_by_state,
                 candidates=candidates,
+                constitution=const,
                 rng=rng,
+                fct_index=fct_index,
             )
-            if runoff_winner:
-                wins[runoff_winner] += 1
+            wins[runoff.winner] += 1
+            if runoff.decided_in == 3:
+                third_election_count += 1
 
         state_shares_sum += sim_shares
 
@@ -102,6 +109,11 @@ def run_simulations(
         "seed": seed,
         "win_probabilities": win_probs,
         "runoff_probability": runoff_count / n_sims,
+        "third_election_probability": third_election_count / n_sims,
+        "win_rule": {
+            k: const["win_rule"].get(k)
+            for k in ("fct_interpretation", "fractional_rule", "spread_fraction")
+        },
         "avg_state_shares": avg_state_shares.tolist(),
         "candidates": candidates,
     }
